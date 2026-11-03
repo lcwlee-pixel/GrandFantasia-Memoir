@@ -1,42 +1,46 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grand Fantasia - 精灵乐章纪念馆</title>
+    <title>Grand Fantasia - 精靈樂章紀念館</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            user-select: none;
         }
+
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
+            font-family: "Microsoft JhengHei", "PMingLiU", Arial, sans-serif;
             background-color: #000;
-            font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
         }
 
-        /* 开场视频容器 */
-        #intro-screen {
+        /* 视频开场全屏层 */
+        #intro-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             z-index: 999;
             background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         #intro-video {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 保证视频比例完整显示，不拉伸 */
+            object-fit: contain;
         }
 
         /* 跳过按钮 */
@@ -44,104 +48,266 @@
             position: absolute;
             bottom: 30px;
             right: 30px;
-            padding: 10px 24px;
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 8px 20px;
+            background: rgba(0, 0, 0, 0.65);
+            color: #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 20px;
             cursor: pointer;
-            font-size: 14px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s;
+            font-size: 13px;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s ease;
             z-index: 1000;
         }
         .skip-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: #fff;
+            background: rgba(255, 255, 255, 0.25);
+            border-color: #fef08a;
+            color: #fff;
         }
 
-        /* 主登录/回忆界面 */
-        #main-content {
-            position: absolute;
+        /* 登录主界面背景 */
+        #login-page {
+            position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
+            /* 使用上传的公会合影图片作为背景 */
+            background: url('bg.jpg') center center / cover no-repeat #1a1a1a;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: #fff;
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             opacity: 0;
-            transition: opacity 1s ease;
+            transition: opacity 1.2s ease;
         }
 
-        .login-card {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 40px;
+        /* 精灵乐章经典复古登录框面板 (还原 image_94feee.png 风格) */
+        .gf-login-box {
+            position: relative;
+            width: 360px;
+            padding: 28px 24px 22px 24px;
+            background: rgba(25, 28, 34, 0.88);
+            border: 2px solid #a3957a;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            text-align: center;
-            backdrop-filter: blur(8px);
+            box-shadow: 
+                0 0 0 1px #4a4031,
+                0 0 25px rgba(0, 0, 0, 0.85),
+                inset 0 0 15px rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        /* 金属花纹装饰角 */
+        .gf-login-box::before, .gf-login-box::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e0d0b0;
+        }
+        .gf-login-box::before {
+            top: -4px;
+            left: -4px;
+            border-right: none;
+            border-bottom: none;
+            border-top-left-radius: 6px;
+        }
+        .gf-login-box::after {
+            bottom: -4px;
+            right: -4px;
+            border-left: none;
+            border-top: none;
+            border-bottom-right-radius: 6px;
+        }
+
+        /* 文本标签文字 (黄色浮雕感) */
+        .gf-label {
+            color: #ffe699;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px #000, 0 0 4px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+        }
+
+        /* 精灵乐章风格的暗色金属圆角输入框框条 */
+        .gf-input-wrapper {
+            position: relative;
+            background: linear-gradient(180deg, #1c2024 0%, #2a3038 100%);
+            border: 2px solid #7c705a;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 1px 2px rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            transition: all 0.2s ease;
+        }
+        .gf-input-wrapper:focus-within {
+            border-color: #ffd700;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .gf-input {
+            width: 100%;
+            height: 36px;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 15px;
+            padding: 0 6px;
+            font-family: inherit;
+        }
+
+        /* 复古勾选框 */
+        .gf-checkbox-label {
+            color: #d1d5db;
+            font-size: 12px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px #000;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .gf-checkbox {
+            accent-color: #a3957a;
+            width: 14px;
+            height: 14px;
+            cursor: pointer;
+        }
+
+        /* 精灵乐章“確定”立体金属按钮 */
+        .gf-btn-confirm {
+            width: 100%;
+            height: 42px;
+            background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #cbd5e1 70%, #94a3b8 100%);
+            border: 2px solid #5a5040;
+            border-radius: 6px;
+            color: #262018;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 4px;
+            cursor: pointer;
+            box-shadow: 
+                0 3px 6px rgba(0,0,0,0.6),
+                inset 0 1px 0 rgba(255,255,255,0.9),
+                inset 0 -2px 4px rgba(0,0,0,0.2);
+            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+            transition: all 0.1s ease;
+        }
+        .gf-btn-confirm:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #fef08a 50%, #eab308 100%);
+            border-color: #78350f;
+            color: #451a03;
+        }
+        .gf-btn-confirm:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.6), inset 0 2px 4px rgba(0,0,0,0.4);
+        }
+
+        /* 水印与版权宣告 */
+        .gf-copyright {
+            position: absolute;
+            bottom: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            text-shadow: 1px 1px 2px #000;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. 开场动画层 -->
-    <div id="intro-screen">
+    <!-- 1. 开场动画层 (logo.mp4) -->
+    <div id="intro-overlay">
         <video id="intro-video" autoplay muted playsinline preload="auto">
             <source src="logo.mp4" type="video/mp4">
-            您的浏览器不支持 HTML5 视频播放。
+            您的瀏覽器不支援 HTML5 影片播放。
         </video>
-        <button class="skip-btn" onclick="finishIntro()">跳过动画 ⏭</button>
+        <button class="skip-btn" onclick="finishIntro()">跳過動畫 ⏭</button>
     </div>
 
-    <!-- 2. 主页面/登录门槛层 -->
-    <div id="main-content">
-        <div class="login-card">
-            <h1>✨ 精灵乐章 Memoir</h1>
-            <p style="margin: 15px 0; color: #ddd;">欢迎回到瑟斐尔大陆</p>
+    <!-- 2. 主登录界面 (以上传的公会合影为背景) -->
+    <div id="login-page">
+        
+        <!-- 精灵乐章经典登录框 -->
+        <div class="gf-login-box">
+            
+            <!-- 账号输入区块 -->
+            <div class="mb-4">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="gf-label">帳號</span>
+                    <label class="gf-checkbox-label">
+                        <input type="checkbox" class="gf-checkbox" checked>
+                        記住帳號
+                    </label>
+                </div>
+                <div class="gf-input-wrapper">
+                    <input type="text" id="username" class="gf-input" placeholder="" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- 密码输入区块 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-1">
+                    <span class="gf-label">密碼</span>
+                    <label class="gf-checkbox-label">
+                        <input type="checkbox" class="gf-checkbox">
+                        虛擬鍵盤
+                    </label>
+                </div>
+                <div class="gf-input-wrapper">
+                    <input type="password" id="password" class="gf-input" placeholder="" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- 確定按钮 -->
+            <button class="gf-btn-confirm" onclick="handleLogin()">
+                確定
+            </button>
+        </div>
+
+        <!-- 版权/回忆字幕 -->
+        <div class="gf-copyright">
+            © X-Legend Entertainment Corp. All Rights Reserved. 《精靈樂章》紀念館
         </div>
     </div>
 
     <script>
         const video = document.getElementById('intro-video');
-        const introScreen = document.getElementById('intro-screen');
-        const mainContent = document.getElementById('main-content');
+        const introOverlay = document.getElementById('intro-overlay');
+        const loginPage = document.getElementById('login-page');
 
-        // 淡出并切入主页面的核心函数
+        // 完成/跳过视频，平滑过渡到登录主界面
         function finishIntro() {
-            introScreen.style.opacity = '0';
+            introOverlay.style.opacity = '0';
             setTimeout(() => {
-                introScreen.style.display = 'none';
-                mainContent.style.opacity = '1';
-            }, 1000);
+                introOverlay.style.display = 'none';
+                loginPage.style.opacity = '1';
+                // 自动聚焦到账号输入框
+                document.getElementById('username').focus();
+            }, 1200);
         }
 
-        // 方案 A：如果你的视频文件本身就已经被裁剪成了 5 秒，播放完会自动触发此事件
+        // 监听视频播放完毕事件
         video.addEventListener('ended', finishIntro);
 
-        // 方案 B：如果你的视频文件还是长视频，但你想用代码【强制在第 5 秒截断】并进入主页，
-        // 可以取消下面三行代码的注释（删除斜杠星号），它会在播放到 5.0 秒时自动跳转：
-        /*
-        video.addEventListener('timeupdate', () => {
-            if (video.currentTime >= 5.0) {
-                finishIntro();
-            }
-        });
-        */
-
-        // 自动播放兼容处理
+        // 处理自动播放被截拦的情况
         document.addEventListener('DOMContentLoaded', () => {
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.catch(error => {
-                    console.log("Autoplay was prevented, waiting for user click.");
+                    console.log("Autoplay was prevented by browser Policy.");
                 });
             }
         });
+
+        // 登录按钮点击反馈
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            if (!user) {
+                alert("請輸入帳號！");
+            } else {
+                alert(`歡迎回到瑟斐爾大陸，${user}！(紀念館模式)`);
+            }
+        }
     </script>
 </body>
 </html>
