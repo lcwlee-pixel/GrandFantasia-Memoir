@@ -3,342 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>精灵乐章 - 私人回忆录</title>
+    <title>Grand Fantasia - 精灵乐章纪念馆</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: none;
+            box-sizing: border-box;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0b0e14;
-            color: #fff;
+        body, html {
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            height: 100vh;
+            background-color: #000;
+            font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
         }
 
-        /* --- 开场视频播放层 --- */
+        /* 开场视频容器 */
         #intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 999;
             background-color: #000;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 100;
             transition: opacity 1s ease;
         }
+
         #intro-video {
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: contain; /* 保证视频比例完整显示，不拉伸 */
         }
+
+        /* 跳过按钮 */
         .skip-btn {
             position: absolute;
             bottom: 30px;
             right: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 24px;
+            background: rgba(0, 0, 0, 0.6);
             color: #fff;
-            padding: 8px 16px;
-            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
-            backdrop-filter: blur(4px);
-            transition: background 0.2s;
-            z-index: 101;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            z-index: 1000;
         }
         .skip-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #fff;
         }
 
-        /* --- 页面 1：登录界面 --- */
-        #login-screen {
-            position: fixed;
+        /* 主登录/回忆界面 */
+        #main-content {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6)), 
-                        url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10;
+            color: #fff;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             opacity: 0;
-            visibility: hidden;
-            transition: opacity 1s ease, transform 1s ease;
+            transition: opacity 1s ease;
         }
 
-        .login-box {
-            background: rgba(20, 28, 45, 0.85);
-            border: 2px solid #5a82ad;
-            box-shadow: 0 0 20px rgba(78, 161, 255, 0.4), inset 0 0 15px rgba(0, 0, 0, 0.8);
+        .login-card {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 40px;
             border-radius: 12px;
-            padding: 30px 40px;
-            width: 380px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
             text-align: center;
             backdrop-filter: blur(8px);
-        }
-
-        .login-title {
-            font-size: 22px;
-            color: #79c5ef;
-            text-shadow: 0 0 8px rgba(121, 197, 239, 0.8);
-            margin-bottom: 25px;
-            letter-spacing: 2px;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #a0c0df;
-            margin-bottom: 6px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 10px 14px;
-            background: rgba(10, 15, 25, 0.9);
-            border: 1px solid #3b597b;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 15px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: #79c5ef;
-            box-shadow: 0 0 8px rgba(121, 197, 239, 0.5);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(180deg, #4a82b8 0%, #25476d 100%);
-            border: 1px solid #79c5ef;
-            border-radius: 6px;
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            text-shadow: 0 1px 2px #000;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            transition: all 0.2s ease;
-        }
-
-        .login-btn:hover {
-            background: linear-gradient(180deg, #5c97d1 0%, #2f5988 100%);
-            box-shadow: 0 0 12px rgba(121, 197, 239, 0.8);
-        }
-
-        .error-msg {
-            color: #ff6b6b;
-            font-size: 13px;
-            margin-top: 15px;
-            min-height: 18px;
-        }
-
-        /* --- 页面 2：主内容回忆录 --- */
-        #main-content {
-            display: none;
-            opacity: 0;
-            padding: 40px 20px;
-            max-width: 1100px;
-            margin: 0 auto;
-            transition: opacity 1.2s ease;
-            overflow-y: auto;
-            height: 100vh;
-        }
-
-        header.main-header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(121, 197, 239, 0.3);
-        }
-
-        header.main-header h1 {
-            font-size: 32px;
-            color: #79c5ef;
-            margin-bottom: 10px;
-        }
-
-        .memory-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-        }
-
-        .memory-card {
-            background: rgba(20, 28, 45, 0.6);
-            border: 1px solid #2f4562;
-            border-radius: 10px;
-            padding: 20px;
-            transition: transform 0.3s, border-color 0.3s;
-        }
-
-        .memory-card:hover {
-            transform: translateY(-5px);
-            border-color: #79c5ef;
-        }
-
-        .memory-card h3 {
-            color: #ffd166;
-            margin-bottom: 10px;
-        }
-
-        .memory-card p {
-            color: #c0d0e0;
-            font-size: 14px;
-            line-height: 1.6;
         }
     </style>
 </head>
 <body>
 
-    <!-- 开场动画层 -->
+    <!-- 1. 开场动画层 -->
     <div id="intro-screen">
-        <video id="intro-video" autoplay muted playsinline controls preload="auto">
-    <source src="logo.mp4" type="video/mp4">
-    您的浏览器不支持视频播放
-</video>
+        <video id="intro-video" autoplay muted playsinline preload="auto">
+            <source src="logo.mp4" type="video/mp4">
+            您的浏览器不支持 HTML5 视频播放。
+        </video>
         <button class="skip-btn" onclick="finishIntro()">跳过动画 ⏭</button>
     </div>
 
-    <!-- 登录背景音效 -->
-    <audio id="bgm" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- 页面 1：登录界面 -->
-    <div id="login-screen">
-        <div class="login-box">
-            <div class="login-title">✨ 精灵乐章 · 私人记忆库</div>
-            
-            <div class="input-group">
-                <label for="username">精灵使者通行证 (ID)</label>
-                <input type="text" id="username" placeholder="请输入你的专属暗号/ID" autocomplete="off">
-            </div>
-
-            <button class="login-btn" onclick="attemptLogin()">进入瑟堡世界</button>
-            
-            <div class="error-msg" id="error-msg"></div>
+    <!-- 2. 主页面/登录门槛层 -->
+    <div id="main-content">
+        <div class="login-card">
+            <h1>✨ 精灵乐章 Memoir</h1>
+            <p style="margin: 15px 0; color: #ddd;">欢迎回到瑟斐尔大陆</p>
+            <!-- 登录逻辑可后续扩展 -->
         </div>
     </div>
 
-    <!-- 页面 2：主内容区 -->
-    <div id="main-content">
-        <header class="main-header">
-            <h1 id="welcome-title">欢迎回来，精灵使者</h1>
-            <p>这里记录着我们在基尔、加斯洛与安哥亚岛度过的时光。</p>
-        </header>
-
-        <main class="memory-grid">
-            <div class="memory-card">
-                <h3>📜 公会编年史</h3>
-                <p>记录公会从建立之初到每一次公会战、副本开荒的辉煌时刻与经典截图。</p>
-            </div>
-            <div class="memory-card">
-                <h3>🧚‍♂️ 我的守护精灵</h3>
-                <p>收藏大家当年最心爱的精灵祭坛、装扮与满级日志。</p>
-            </div>
-            <div class="memory-card">
-                <h3>📸 记忆老照片</h3>
-                <p>沉淀那些在加斯洛大门前、合照打卡点的珍贵旧截图。</p>
-            </div>
-        </main>
-    </div>
-
     <script>
-        const WHITELIST_USERS = [
-            "精灵使者",
-            "加斯洛守护者",
-            "friend1",
-            "friend2"
-        ];
-
         const video = document.getElementById('intro-video');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
 
-        // 强制触发播放
-        window.addEventListener('DOMContentLoaded', () => {
-            const promise = video.play();
-            if (promise !== undefined) {
-                promise.catch(() => {
-                    // 应对极少数严格阻拦：点击任意处播放
-                    document.body.addEventListener('click', () => {
-                        video.play();
-                    }, { once: true });
-                });
-            }
-        });
-
-        // 视频播放完毕后自动转场进入登录画面
-        video.onended = function() {
-            finishIntro();
-        };
-
+        // 结束/跳过视频，淡出进入主页
         function finishIntro() {
-            const introScreen = document.getElementById('intro-screen');
-            const loginScreen = document.getElementById('login-screen');
-
             introScreen.style.opacity = '0';
             setTimeout(() => {
                 introScreen.style.display = 'none';
-                loginScreen.style.visibility = 'visible';
-                loginScreen.style.opacity = '1';
+                mainContent.style.opacity = '1';
             }, 1000);
         }
 
-        function attemptLogin() {
-            const usernameInput = document.getElementById('username').value.trim();
-            const errorMsg = document.getElementById('error-msg');
-            const bgm = document.getElementById('bgm');
+        // 监听视频播放结束事件
+        video.addEventListener('ended', finishIntro);
 
-            if (!usernameInput) {
-                errorMsg.innerText = "请输入通行证！";
-                return;
-            }
-
-            if (WHITELIST_USERS.includes(usernameInput)) {
-                errorMsg.innerText = "";
-                bgm.play().catch(err => console.log("音频播放受到限制:", err));
-
-                const loginScreen = document.getElementById('login-screen');
-                const mainContent = document.getElementById('main-content');
-
-                loginScreen.style.opacity = '0';
-                loginScreen.style.transform = 'scale(1.05)';
-
-                setTimeout(() => {
-                    loginScreen.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    document.getElementById('welcome-title').innerText = `欢迎回来，${usernameInput}`;
-
-                    setTimeout(() => {
-                        mainContent.style.opacity = '1';
-                    }, 50);
-                }, 1000);
-
-            } else {
-                errorMsg.innerText = "⚠️ 无法识别的使者暗号，只有特定伙伴才能进入！";
-            }
-        }
-
-        document.getElementById('username').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                attemptLogin();
+        // 兼容处理：防止部分移动端/浏览器阻止自动播放
+        document.addEventListener('DOMContentLoaded', () => {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Autoplay was prevented, waiting for user click.");
+                });
             }
         });
     </script>
