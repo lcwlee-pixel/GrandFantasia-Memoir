@@ -103,7 +103,6 @@
         <div class="login-card">
             <h1>✨ 精灵乐章 Memoir</h1>
             <p style="margin: 15px 0; color: #ddd;">欢迎回到瑟斐尔大陆</p>
-            <!-- 登录逻辑可后续扩展 -->
         </div>
     </div>
 
@@ -112,7 +111,7 @@
         const introScreen = document.getElementById('intro-screen');
         const mainContent = document.getElementById('main-content');
 
-        // 结束/跳过视频，淡出进入主页
+        // 淡出并切入主页面的核心函数
         function finishIntro() {
             introScreen.style.opacity = '0';
             setTimeout(() => {
@@ -121,10 +120,20 @@
             }, 1000);
         }
 
-        // 监听视频播放结束事件
+        // 方案 A：如果你的视频文件本身就已经被裁剪成了 5 秒，播放完会自动触发此事件
         video.addEventListener('ended', finishIntro);
 
-        // 兼容处理：防止部分移动端/浏览器阻止自动播放
+        // 方案 B：如果你的视频文件还是长视频，但你想用代码【强制在第 5 秒截断】并进入主页，
+        // 可以取消下面三行代码的注释（删除斜杠星号），它会在播放到 5.0 秒时自动跳转：
+        /*
+        video.addEventListener('timeupdate', () => {
+            if (video.currentTime >= 5.0) {
+                finishIntro();
+            }
+        });
+        */
+
+        // 自动播放兼容处理
         document.addEventListener('DOMContentLoaded', () => {
             const playPromise = video.play();
             if (playPromise !== undefined) {
