@@ -4,37 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grand Fantasia - 精靈樂章紀念館</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            user-select: none;
         }
-
         body, html {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: "Microsoft JhengHei", "PMingLiU", Arial, sans-serif;
             background-color: #000;
+            font-family: Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+            user-select: none;
         }
 
-        /* 视频开场全屏层 */
-        #intro-overlay {
+        /* 1. 開場影片層 */
+        #intro-screen {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             z-index: 999;
             background-color: #000;
-            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease;
         }
 
         #intro-video {
@@ -43,271 +40,365 @@
             object-fit: contain;
         }
 
-        /* 跳过按钮 */
         .skip-btn {
             position: absolute;
             bottom: 30px;
             right: 30px;
             padding: 8px 20px;
-            background: rgba(0, 0, 0, 0.65);
-            color: #e2e8f0;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 20px;
             cursor: pointer;
-            font-size: 13px;
-            backdrop-filter: blur(4px);
-            transition: all 0.2s ease;
+            font-size: 14px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
             z-index: 1000;
         }
         .skip-btn:hover {
-            background: rgba(255, 255, 255, 0.25);
-            border-color: #fef08a;
-            color: #fff;
+            background: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
         }
 
-        /* 登录主界面背景 */
-        #login-page {
-            position: fixed;
+        /* 2. 登錄主畫面層 */
+        #main-content {
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            /* 使用上传的公会合影图片作为背景 */
-            background: url('bg.jpg') center center / cover no-repeat #1a1a1a;
+            width: 100%;
+            height: 100%;
+            background: url('bg.png') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 1.2s ease;
+            transition: opacity 1.5s ease;
         }
 
-        /* 精灵乐章经典复古登录框面板 (还原 image_94feee.png 风格) */
-        .gf-login-box {
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.15);
+            z-index: 1;
+        }
+
+        /* 正中間上方的 Logo 樣式 */
+        .top-logo {
             position: relative;
-            width: 360px;
-            padding: 28px 24px 22px 24px;
-            background: rgba(25, 28, 34, 0.88);
-            border: 2px solid #a3957a;
-            border-radius: 12px;
-            box-shadow: 
-                0 0 0 1px #4a4031,
-                0 0 25px rgba(0, 0, 0, 0.85),
-                inset 0 0 15px rgba(0, 0, 0, 0.7);
+            z-index: 2;
+            width: 380px;
+            max-width: 80vw;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+        }
+
+        /* --- 右上角系統設定按鈕 --- */
+        .settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
+            background: rgba(30, 24, 18, 0.75);
+            color: #e6c885;
+            border: 2px solid #b89b5e;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(184, 155, 94, 0.2);
+            backdrop-filter: blur(3px);
+            transition: all 0.2s;
+            z-index: 10;
+            text-shadow: 1px 1px 2px #000;
+        }
+        
+        .settings-btn:hover {
+            background: rgba(184, 155, 94, 0.2);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(184, 155, 94, 0.5);
+        }
+
+        /* --- 設定面板 --- */
+        .settings-panel {
+            position: absolute;
+            top: 70px;
+            right: 20px;
+            width: 220px;
+            padding: 16px;
+            background: rgba(30, 24, 18, 0.85);
+            border: 2px solid #b89b5e;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
             backdrop-filter: blur(5px);
         }
 
-        /* 金属花纹装饰角 */
-        .gf-login-box::before, .gf-login-box::after {
-            content: '';
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #e0d0b0;
-        }
-        .gf-login-box::before {
-            top: -4px;
-            left: -4px;
-            border-right: none;
-            border-bottom: none;
-            border-top-left-radius: 6px;
-        }
-        .gf-login-box::after {
-            bottom: -4px;
-            right: -4px;
-            border-left: none;
-            border-top: none;
-            border-bottom-right-radius: 6px;
+        .settings-title {
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            text-align: center;
+            border-bottom: 1px solid #7c653d;
+            padding-bottom: 8px;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        /* 文本标签文字 (黄色浮雕感) */
-        .gf-label {
-            color: #ffe699;
+        .volume-control {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .volume-control span {
+            color: #c9b078;
+            font-size: 13px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .volume-control input[type=range] {
+            accent-color: #b89b5e;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        /* 100% 完美復刻 ui1.png 的華麗藤蔓浮雕登錄框 */
+        .login-box {
+            position: relative;
+            z-index: 2;
+            width: 360px;
+            padding: 30px 32px;
+            background: rgba(35, 28, 20, 0.82);
+            border: 3px solid #b89b5e;
+            border-image: linear-gradient(to bottom, #edd39a, #8c6d33) 1;
+            border-radius: 4px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.85), inset 0 0 15px rgba(184, 155, 94, 0.25);
+            backdrop-filter: blur(4px);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-label {
+            color: #edd39a;
+            font-size: 15px;
             font-weight: bold;
-            font-size: 14px;
-            text-shadow: 1px 1px 2px #000, 0 0 4px rgba(0,0,0,0.8);
+            text-shadow: 1px 1px 2px #000;
             letter-spacing: 1px;
         }
 
-        /* 精灵乐章风格的暗色金属圆角输入框框条 */
-        .gf-input-wrapper {
-            position: relative;
-            background: linear-gradient(180deg, #1c2024 0%, #2a3038 100%);
-            border: 2px solid #7c705a;
-            border-radius: 10px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 1px 2px rgba(255,255,255,0.1);
-            padding: 2px 8px;
-            transition: all 0.2s ease;
+        .checkbox-label {
+            color: #c9b078;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            text-shadow: 1px 1px 2px #000;
         }
-        .gf-input-wrapper:focus-within {
-            border-color: #ffd700;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.8), 0 0 8px rgba(255, 215, 0, 0.5);
+
+        .checkbox-label input {
+            accent-color: #b89b5e;
+            cursor: pointer;
         }
 
         .gf-input {
             width: 100%;
-            height: 36px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #ffffff;
+            height: 38px;
+            background: rgba(15, 12, 10, 0.9);
+            border: 1px solid #9c7f4d;
+            border-radius: 3px;
+            padding: 0 12px;
+            color: #fff;
             font-size: 15px;
-            padding: 0 6px;
-            font-family: inherit;
+            outline: none;
+            box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.9);
+            transition: all 0.2s;
         }
 
-        /* 复古勾选框 */
-        .gf-checkbox-label {
-            color: #d1d5db;
-            font-size: 12px;
-            cursor: pointer;
-            text-shadow: 1px 1px 2px #000;
+        .gf-input:focus {
+            border-color: #edd39a;
+            box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(237, 211, 154, 0.4);
+        }
+
+        .btn-container {
+            margin-top: 4px;
             display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .gf-checkbox {
-            accent-color: #a3957a;
-            width: 14px;
-            height: 14px;
-            cursor: pointer;
+            justify-content: center;
         }
 
-        /* 精灵乐章“確定”立体金属按钮 */
-        .gf-btn-confirm {
+        .gf-btn {
             width: 100%;
-            height: 42px;
-            background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 40%, #cbd5e1 70%, #94a3b8 100%);
-            border: 2px solid #5a5040;
-            border-radius: 6px;
-            color: #262018;
-            font-weight: bold;
+            height: 40px;
+            background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
+            border: 1px solid #edd39a;
+            border-radius: 3px;
+            color: #2a1a08;
             font-size: 16px;
-            letter-spacing: 4px;
+            font-weight: bold;
+            text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
             cursor: pointer;
-            box-shadow: 
-                0 3px 6px rgba(0,0,0,0.6),
-                inset 0 1px 0 rgba(255,255,255,0.9),
-                inset 0 -2px 4px rgba(0,0,0,0.2);
-            text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
             transition: all 0.1s ease;
         }
-        .gf-btn-confirm:hover {
-            background: linear-gradient(180deg, #ffffff 0%, #fef08a 50%, #eab308 100%);
-            border-color: #78350f;
-            color: #451a03;
-        }
-        .gf-btn-confirm:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.6), inset 0 2px 4px rgba(0,0,0,0.4);
+
+        .gf-btn:hover {
+            background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
         }
 
-        /* 水印与版权宣告 */
-        .gf-copyright {
-            position: absolute;
-            bottom: 12px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
-            text-shadow: 1px 1px 2px #000;
-            pointer-events: none;
+        .gf-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            background: linear-gradient(to bottom, #8c6d33 0%, #d4b572 100%);
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. 开场动画层 (logo.mp4) -->
-    <div id="intro-overlay">
+    <!-- 1. 開場影片層 -->
+    <div id="intro-screen">
         <video id="intro-video" autoplay muted playsinline preload="auto">
             <source src="logo.mp4" type="video/mp4">
-            您的瀏覽器不支援 HTML5 影片播放。
+            您的瀏覽器不支持 HTML5 影片播放。
         </video>
         <button class="skip-btn" onclick="finishIntro()">跳過動畫 ⏭</button>
     </div>
 
-    <!-- 2. 主登录界面 (以上传的公会合影为背景) -->
-    <div id="login-page">
+    <!-- 2. 登錄主畫面層 -->
+    <div id="main-content">
+        <div class="overlay"></div>
+
+        <!-- 系統設定按鈕與面板 -->
+        <button class="settings-btn" onclick="toggleSettings(event)">⚙️ 系統設定</button>
         
-        <!-- 精灵乐章经典登录框 -->
-        <div class="gf-login-box">
-            
-            <!-- 账号输入区块 -->
-            <div class="mb-4">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="gf-label">帳號</span>
-                    <label class="gf-checkbox-label">
-                        <input type="checkbox" class="gf-checkbox" checked>
-                        記住帳號
-                    </label>
-                </div>
-                <div class="gf-input-wrapper">
-                    <input type="text" id="username" class="gf-input" placeholder="" autocomplete="off">
-                </div>
+        <div id="settings-panel" class="settings-panel">
+            <div class="settings-title">遊戲設定</div>
+            <div class="volume-control">
+                <span>背景音樂音量</span>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
             </div>
-
-            <!-- 密码输入区块 -->
-            <div class="mb-6">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="gf-label">密碼</span>
-                    <label class="gf-checkbox-label">
-                        <input type="checkbox" class="gf-checkbox">
-                        虛擬鍵盤
-                    </label>
-                </div>
-                <div class="gf-input-wrapper">
-                    <input type="password" id="password" class="gf-input" placeholder="" autocomplete="off">
-                </div>
-            </div>
-
-            <!-- 確定按钮 -->
-            <button class="gf-btn-confirm" onclick="handleLogin()">
-                確定
-            </button>
         </div>
 
-        <!-- 版权/回忆字幕 -->
-        <div class="gf-copyright">
-            © X-Legend Entertainment Corp. All Rights Reserved. 《精靈樂章》紀念館
+        <!-- 正中間上方的 Logo -->
+        <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
+
+        <!-- 登錄框 -->
+        <div class="login-box">
+            <div class="input-group">
+                <div class="input-row">
+                    <span class="input-label">帳號</span>
+                    <label class="checkbox-label">
+                        <input type="checkbox"> 記住帳號
+                    </label>
+                </div>
+                <input type="text" class="gf-input" placeholder="" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <div class="input-row">
+                    <span class="input-label">密碼</span>
+                    <label class="checkbox-label">
+                        <input type="checkbox"> 虛擬鍵盤
+                    </label>
+                </div>
+                <input type="password" class="gf-input" placeholder="" autocomplete="off">
+            </div>
+
+            <div class="btn-container">
+                <button class="gf-btn" onclick="handleLogin()">確定</button>
+            </div>
         </div>
     </div>
 
+    <!-- 3. 背景音樂 (BGM) -->
+    <audio id="bgm" loop preload="auto">
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         const video = document.getElementById('intro-video');
-        const introOverlay = document.getElementById('intro-overlay');
-        const loginPage = document.getElementById('login-page');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
+        const bgm = document.getElementById('bgm');
+        const settingsPanel = document.getElementById('settings-panel');
+        const volumeSlider = document.getElementById('volume-slider');
+        
+        let introFinished = false;
 
-        // 完成/跳过视频，平滑过渡到登录主界面
-        function finishIntro() {
-            introOverlay.style.opacity = '0';
-            setTimeout(() => {
-                introOverlay.style.display = 'none';
-                loginPage.style.opacity = '1';
-                // 自动聚焦到账号输入框
-                document.getElementById('username').focus();
-            }, 1200);
+        // 預設音量 30%
+        bgm.volume = 0.3;
+
+        function toggleSettings(event) {
+            event.stopPropagation();
+            if (settingsPanel.style.display === 'flex') {
+                settingsPanel.style.display = 'none';
+            } else {
+                settingsPanel.style.display = 'flex';
+            }
         }
 
-        // 监听视频播放完毕事件
-        video.addEventListener('ended', finishIntro);
+        volumeSlider.addEventListener('input', (e) => {
+            bgm.volume = e.target.value;
+        });
 
-        // 处理自动播放被截拦的情况
-        document.addEventListener('DOMContentLoaded', () => {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay was prevented by browser Policy.");
-                });
+        // 點擊網頁任意處：解鎖音樂播放權限 + 關閉設定面板
+        document.addEventListener('click', (event) => {
+            if (introFinished && bgm.paused) {
+                bgm.play().catch(err => console.log("等待交互播放音樂: ", err));
+            }
+            
+            if (settingsPanel.style.display === 'flex' && 
+                !settingsPanel.contains(event.target) && 
+                !event.target.classList.contains('settings-btn')) {
+                settingsPanel.style.display = 'none';
             }
         });
 
-        // 登录按钮点击反馈
-        function handleLogin() {
-            const user = document.getElementById('username').value;
-            if (!user) {
-                alert("請輸入帳號！");
-            } else {
-                alert(`歡迎回到瑟斐爾大陸，${user}！(紀念館模式)`);
+        function finishIntro() {
+            if (introFinished) return;
+            introFinished = true;
+
+            introScreen.style.opacity = '0';
+            
+            if (bgm.paused) {
+                bgm.play().catch(err => console.log("自動播放被攔截: ", err));
             }
+
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                mainContent.style.opacity = '1';
+            }, 1000);
         }
+
+        video.addEventListener('ended', finishIntro);
+
+        function handleLogin() {
+            alert("歡迎回到瑟斐爾大陸！");
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => console.log("Video autoplay caught."));
+            }
+        });
     </script>
 </body>
 </html>
