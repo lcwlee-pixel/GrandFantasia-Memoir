@@ -86,14 +86,14 @@
             z-index: 1;
         }
 
-        /* 正中間上方的 Logo 樣式 */
+        /* --- Logo 已放大 --- */
         .top-logo {
             position: relative;
             z-index: 2;
-            width: 380px;
-            max-width: 80vw;
-            margin-bottom: 20px;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.6));
+            width: 500px; /* 尺寸放大 */
+            max-width: 85vw;
+            margin-bottom: 25px;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
         }
 
         /* --- 右上角系統設定按鈕 --- */
@@ -167,96 +167,87 @@
             cursor: pointer;
         }
 
-        /* 100% 完美復刻 ui1.png 的華麗藤蔓浮雕登錄框 */
-        .login-box {
+        /* --- 使用真實 UI 图片 (ui_bg.png) 的容器 --- */
+        .login-ui-container {
             position: relative;
             z-index: 2;
-            width: 360px;
-            padding: 30px 32px;
-            background: rgba(35, 28, 20, 0.82);
-            border: 3px solid #b89b5e;
-            border-image: linear-gradient(to bottom, #edd39a, #8c6d33) 1;
-            border-radius: 4px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.85), inset 0 0 15px rgba(184, 155, 94, 0.25);
-            backdrop-filter: blur(4px);
+            width: 420px; /* 根据图片比例适配 */
+            height: 280px;
+            background: url('ui_bg.png') no-repeat center center/contain;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 40px;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.7));
         }
 
-        .input-group {
+        /* 账号密码输入框精确嵌入 UI 中 */
+        .input-wrapper {
+            width: 260px;
+            margin-bottom: 22px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 3px;
         }
 
-        .input-row {
+        .input-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 4px;
         }
 
-        .input-label {
-            color: #edd39a;
-            font-size: 15px;
+        .input-title {
+            color: #432e18; /* 契合原图字色或加深阴影 */
+            font-size: 13px;
             font-weight: bold;
-            text-shadow: 1px 1px 2px #000;
-            letter-spacing: 1px;
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.4);
         }
 
         .checkbox-label {
-            color: #c9b078;
-            font-size: 12px;
+            color: #523b22;
+            font-size: 11px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
-            text-shadow: 1px 1px 2px #000;
+            font-weight: bold;
         }
 
         .checkbox-label input {
-            accent-color: #b89b5e;
+            accent-color: #8c6d33;
             cursor: pointer;
         }
 
         .gf-input {
             width: 100%;
-            height: 38px;
-            background: rgba(15, 12, 10, 0.9);
-            border: 1px solid #9c7f4d;
-            border-radius: 3px;
-            padding: 0 12px;
-            color: #fff;
-            font-size: 15px;
+            height: 32px;
+            background: transparent; /* 透明背景，完美贴合 UI 图片纹理 */
+            border: none;
             outline: none;
-            box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.9);
-            transition: all 0.2s;
+            padding: 0 10px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
         }
 
-        .gf-input:focus {
-            border-color: #edd39a;
-            box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 8px rgba(237, 211, 154, 0.4);
-        }
-
-        .btn-container {
-            margin-top: 4px;
-            display: flex;
-            justify-content: center;
-        }
-
+        /* 确定按钮位置 */
         .gf-btn {
-            width: 100%;
-            height: 40px;
+            width: 180px;
+            height: 32px;
             background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
             border: 1px solid #edd39a;
             border-radius: 3px;
             color: #2a1a08;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            box-shadow: 0 3px 6px rgba(0,0,0,0.4);
             transition: all 0.1s ease;
+            margin-top: 5px;
         }
 
         .gf-btn:hover {
@@ -265,7 +256,7 @@
 
         .gf-btn:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.4);
             background: linear-gradient(to bottom, #8c6d33 0%, #d4b572 100%);
         }
     </style>
@@ -296,14 +287,15 @@
             </div>
         </div>
 
-        <!-- 正中間上方的 Logo -->
+        <!-- 放大后的正中间 Logo -->
         <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
 
-        <!-- 登錄框 -->
-        <div class="login-box">
-            <div class="input-group">
-                <div class="input-row">
-                    <span class="input-label">帳號</span>
+        <!-- 登錄 UI 圖片容器 -->
+        <div class="login-ui-container">
+            <!-- 帳號行 -->
+            <div class="input-wrapper" style="margin-bottom: 26px;">
+                <div class="input-header">
+                    <span class="input-title">帳號</span>
                     <label class="checkbox-label">
                         <input type="checkbox"> 記住帳號
                     </label>
@@ -311,9 +303,10 @@
                 <input type="text" class="gf-input" placeholder="" autocomplete="off">
             </div>
 
-            <div class="input-group">
-                <div class="input-row">
-                    <span class="input-label">密碼</span>
+            <!-- 密碼行 -->
+            <div class="input-wrapper" style="margin-bottom: 12px;">
+                <div class="input-header">
+                    <span class="input-title">密碼</span>
                     <label class="checkbox-label">
                         <input type="checkbox"> 虛擬鍵盤
                     </label>
@@ -321,9 +314,8 @@
                 <input type="password" class="gf-input" placeholder="" autocomplete="off">
             </div>
 
-            <div class="btn-container">
-                <button class="gf-btn" onclick="handleLogin()">確定</button>
-            </div>
+            <!-- 確定按鈕 -->
+            <button class="gf-btn" onclick="handleLogin()">確定</button>
         </div>
     </div>
 
@@ -342,7 +334,6 @@
         
         let introFinished = false;
 
-        // 預設音量 30%
         bgm.volume = 0.3;
 
         function toggleSettings(event) {
@@ -358,7 +349,6 @@
             bgm.volume = e.target.value;
         });
 
-        // 點擊網頁任意處：解鎖音樂播放權限 + 關閉設定面板
         document.addEventListener('click', (event) => {
             if (introFinished && bgm.paused) {
                 bgm.play().catch(err => console.log("等待交互播放音樂: ", err));
