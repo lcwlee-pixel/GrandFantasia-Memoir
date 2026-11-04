@@ -205,4 +205,81 @@
         <div class="login-box">
             <!-- 帳號輸入區 -->
             <div class="input-group">
-                <div class="
+                <div class="input-row">
+                    <span class="input-label">帳號</span>
+                    <label class="checkbox-label">
+                        <input type="checkbox"> 記住帳號
+                    </label>
+                </div>
+                <input type="text" class="gf-input" placeholder="" autocomplete="off">
+            </div>
+
+            <!-- 密碼輸入區 -->
+            <div class="input-group">
+                <div class="input-row">
+                    <span class="input-label">密碼</span>
+                    <label class="checkbox-label">
+                        <input type="checkbox"> 虛擬鍵盤
+                    </label>
+                </div>
+                <input type="password" class="gf-input" placeholder="" autocomplete="off">
+            </div>
+
+            <!-- 確定按鈕 -->
+            <div class="btn-container">
+                <button class="gf-btn" onclick="handleLogin()">確定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. 背景音樂 (BGM) -->
+    <audio id="bgm" loop preload="auto">
+        <source src="bgm.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const video = document.getElementById('intro-video');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-content');
+        const bgm = document.getElementById('bgm');
+        let introFinished = false;
+
+        // 結束開場動畫并進入登錄界面（播 BGM）
+        function finishIntro() {
+            if (introFinished) return;
+            introFinished = true;
+
+            // 淡出影片
+            introScreen.style.opacity = '0';
+            
+            // 播放背景音樂
+            bgm.play().catch(err => {
+                console.log("Autoplay prevented for audio: ", err);
+            });
+
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                mainContent.style.opacity = '1';
+            }, 1000);
+        }
+
+        // 影片播放結束自動跳轉
+        video.addEventListener('ended', finishIntro);
+
+        // 確定按鈕按壓反饋
+        function handleLogin() {
+            alert("歡迎回到瑟斐爾大陸！");
+        }
+
+        // 確保影片能正常播放
+        document.addEventListener('DOMContentLoaded', () => {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Video autoplay caught.");
+                });
+            }
+        });
+    </script>
+</body>
+</html>
