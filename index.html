@@ -60,7 +60,7 @@
             border-color: #fff;
         }
 
-        /* 2. 登錄主畫面層 (已替換為 bg.png) */
+        /* 2. 登錄主畫面層 */
         #main-content {
             position: absolute;
             top: 0;
@@ -75,7 +75,6 @@
             transition: opacity 1.5s ease;
         }
 
-        /* 暗色遮罩 */
         .overlay {
             position: absolute;
             top: 0;
@@ -244,7 +243,16 @@
         const bgm = document.getElementById('bgm');
         let introFinished = false;
 
-        // 結束開場動畫并進入登錄界面（播 BGM）
+        // 播放音频处理逻辑
+        function tryPlayBGM() {
+            if (bgm.paused) {
+                bgm.play().catch(err => {
+                    console.log("音频播放被拦截，等待用户交互: ", err);
+                });
+            }
+        }
+
+        // 結束開場動畫并進入登錄界面
         function finishIntro() {
             if (introFinished) return;
             introFinished = true;
@@ -252,10 +260,8 @@
             // 淡出影片
             introScreen.style.opacity = '0';
             
-            // 播放背景音樂
-            bgm.play().catch(err => {
-                console.log("Autoplay prevented for audio: ", err);
-            });
+            // 尝试播放背景音乐
+            tryPlayBGM();
 
             setTimeout(() => {
                 introScreen.style.display = 'none';
@@ -265,6 +271,13 @@
 
         // 影片播放結束自動跳轉
         video.addEventListener('ended', finishIntro);
+
+        // 💡 用户任意点击网页即可触发音频播放（解决浏览器限制）
+        document.addEventListener('click', () => {
+            if (introFinished) {
+                tryPlayBGM();
+            }
+        });
 
         // 確定按鈕按壓反饋
         function handleLogin() {
