@@ -85,214 +85,26 @@
             z-index: 1;
         }
 
-        /* 經典復刻登錄框 */
-        .login-box {
-            position: relative;
-            z-index: 2;
-            width: 320px;
-            padding: 24px 28px;
+        /* --- 新增：右上角設定按鈕 --- */
+        .settings-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 8px 16px;
             background: rgba(30, 24, 18, 0.75);
-            border: 2px solid #b89b5e;
-            border-radius: 8px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8), inset 0 0 10px rgba(184, 155, 94, 0.3);
-            backdrop-filter: blur(3px);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .input-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .input-label {
             color: #e6c885;
+            border: 2px solid #b89b5e;
+            border-radius: 6px;
+            cursor: pointer;
             font-size: 14px;
             font-weight: bold;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(184, 155, 94, 0.2);
+            backdrop-filter: blur(3px);
+            transition: all 0.2s;
+            z-index: 10;
             text-shadow: 1px 1px 2px #000;
         }
-
-        .checkbox-label {
-            color: #c9b078;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        .checkbox-label input {
-            accent-color: #b89b5e;
-            cursor: pointer;
-        }
-
-        .gf-input {
-            width: 100%;
-            height: 34px;
-            background: rgba(12, 10, 8, 0.85);
-            border: 1px solid #7c653d;
-            border-radius: 4px;
-            padding: 0 10px;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8);
-            transition: border-color 0.2s;
-        }
-
-        .gf-input:focus {
-            border-color: #e6c885;
-            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.8), 0 0 5px rgba(230, 200, 133, 0.5);
-        }
-
-        .btn-container {
-            margin-top: 8px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .gf-btn {
-            width: 100%;
-            height: 36px;
-            background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
-            border: 1px solid #edd39a;
-            border-radius: 4px;
-            color: #2a1a08;
-            font-size: 15px;
-            font-weight: bold;
-            text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.5);
-            transition: all 0.1s ease;
-        }
-
-        .gf-btn:hover {
-            background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
-        }
-
-        .gf-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            background: linear-gradient(to bottom, #8c6d33 0%, #d4b572 100%);
-        }
-    </style>
-</head>
-<body>
-
-    <!-- 1. 開場影片層 -->
-    <div id="intro-screen">
-        <video id="intro-video" autoplay muted playsinline preload="auto">
-            <source src="logo.mp4" type="video/mp4">
-            您的瀏覽器不支持 HTML5 影片播放。
-        </video>
-        <button class="skip-btn" onclick="finishIntro()">跳過動畫 ⏭</button>
-    </div>
-
-    <!-- 2. 登錄主畫面層 -->
-    <div id="main-content">
-        <div class="overlay"></div>
-
-        <div class="login-box">
-            <!-- 帳號輸入區 -->
-            <div class="input-group">
-                <div class="input-row">
-                    <span class="input-label">帳號</span>
-                    <label class="checkbox-label">
-                        <input type="checkbox"> 記住帳號
-                    </label>
-                </div>
-                <input type="text" class="gf-input" placeholder="" autocomplete="off">
-            </div>
-
-            <!-- 密碼輸入區 -->
-            <div class="input-group">
-                <div class="input-row">
-                    <span class="input-label">密碼</span>
-                    <label class="checkbox-label">
-                        <input type="checkbox"> 虛擬鍵盤
-                    </label>
-                </div>
-                <input type="password" class="gf-input" placeholder="" autocomplete="off">
-            </div>
-
-            <!-- 確定按鈕 -->
-            <div class="btn-container">
-                <button class="gf-btn" onclick="handleLogin()">確定</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. 背景音樂 (BGM) -->
-    <audio id="bgm" loop preload="auto">
-        <source src="bgm.mp3" type="audio/mpeg">
-    </audio>
-
-    <script>
-        const video = document.getElementById('intro-video');
-        const introScreen = document.getElementById('intro-screen');
-        const mainContent = document.getElementById('main-content');
-        const bgm = document.getElementById('bgm');
-        let introFinished = false;
-
-        // 播放音频处理逻辑
-        function tryPlayBGM() {
-            if (bgm.paused) {
-                bgm.play().catch(err => {
-                    console.log("音频播放被拦截，等待用户交互: ", err);
-                });
-            }
-        }
-
-        // 結束開場動畫并進入登錄界面
-        function finishIntro() {
-            if (introFinished) return;
-            introFinished = true;
-
-            // 淡出影片
-            introScreen.style.opacity = '0';
-            
-            // 尝试播放背景音乐
-            tryPlayBGM();
-
-            setTimeout(() => {
-                introScreen.style.display = 'none';
-                mainContent.style.opacity = '1';
-            }, 1000);
-        }
-
-        // 影片播放結束自動跳轉
-        video.addEventListener('ended', finishIntro);
-
-        // 💡 用户任意点击网页即可触发音频播放（解决浏览器限制）
-        document.addEventListener('click', () => {
-            if (introFinished) {
-                tryPlayBGM();
-            }
-        });
-
-        // 確定按鈕按壓反饋
-        function handleLogin() {
-            alert("歡迎回到瑟斐爾大陸！");
-        }
-
-        // 確保影片能正常播放
-        document.addEventListener('DOMContentLoaded', () => {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Video autoplay caught.");
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+        
+        .settings-btn:hover {
+            background: rgba(184, 155, 94, 0.2);
+            box-shadow: 0 0 10px rgba
