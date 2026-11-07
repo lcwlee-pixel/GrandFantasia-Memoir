@@ -5,8 +5,8 @@
 }
 
 body, html {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
     background-color: #000;
     font-family: Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
@@ -55,7 +55,7 @@ body, html {
     border-color: #fff;
 }
 
-/* 2. 登錄主畫面層 */
+/* 2. 登錄主畫面層 (全屏自适应背景) */
 #main-content {
     position: absolute;
     top: 0;
@@ -65,9 +65,8 @@ body, html {
     background: url('bg.png') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding-top: 40px;
+    justify-content: center; /* 上下完美居中 */
+    align-items: center;     /* 左右完美居中 */
     opacity: 0;
     transition: opacity 1.5s ease;
 }
@@ -82,13 +81,14 @@ body, html {
     z-index: 1;
 }
 
-/* --- Top Logo --- */
+/* --- Top Logo (响应式缩放) --- */
 .top-logo {
     position: relative;
     z-index: 2;
-    width: 440px;
-    max-width: 80vw;
-    margin-bottom: 20px;
+    width: 32vw;          /* 随屏幕宽度自动按比例缩放 */
+    max-width: 460px;
+    min-width: 280px;
+    margin-bottom: 2vh;   /* 相对视口高度间距 */
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
@@ -163,40 +163,38 @@ body, html {
     cursor: pointer;
 }
 
-/* --- UI 容器（显示背景图片 ui_bg.png）--- */
+/* --- 藤蔓 UI 容器 (按照 1440x1024 独立基准定高) --- */
 .login-ui-container {
     position: relative;
     z-index: 5;
     width: 520px;
-    height: 280px;
-    background: url('ui_bg.png') no-repeat center center / contain;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 310px;
+    background: url('ui_bg.png') no-repeat center center / 100% 100%;
     filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
 }
 
-/* --- 输入框区域定位 --- */
+/* --- 输入框精准挂载在背景图片坐标上 --- */
 .input-wrapper {
-    position: relative;
-    width: 320px;
-    height: 42px;
+    position: absolute;
+    left: 80px;         /* 距手绘图左边缘距离 */
+    width: 320px;       /* 正好填满藤蔓框中间空白 */
+    height: 44px;       /* 匹配框体高度 */
 }
 
-/* 账号框位置 */
+/* 账号框位置（相对于 ui_bg.png 顶端百分比） */
 .login-ui-container .input-wrapper:nth-child(1) {
-    margin-top: 55px;
+    top: 55px;
 }
 
-/* 密码框位置 */
+/* 密码框位置（相对于 ui_bg.png 顶端百分比） */
 .login-ui-container .input-wrapper:nth-child(2) {
-    margin-top: 38px;
+    top: 178px;
 }
 
-/* 右侧文本标签（记住账号 / 虚拟键盘） */
+/* 右侧“记住账号 / 虚拟键盘”文字 */
 .input-header {
     position: absolute;
-    right: -100px;
+    right: -110px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
@@ -204,7 +202,7 @@ body, html {
 }
 
 .input-title {
-    display: none; /* 隐藏原本多余的“账号/密码”文字，直接用背景框表示 */
+    display: none;
 }
 
 .checkbox-label {
@@ -212,10 +210,10 @@ body, html {
     font-size: 13px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
     cursor: pointer;
     font-weight: bold;
-    text-shadow: 1px 1px 3px #000;
+    text-shadow: 1px 1px 3px #000, 0 0 5px #000;
     white-space: nowrap;
 }
 
@@ -224,13 +222,13 @@ body, html {
     cursor: pointer;
 }
 
-/* --- 输入框（半透明黑底衬在框内）--- */
+/* --- 框内半透明衬底与文本 --- */
 .gf-input {
     width: 100%;
     height: 100%;
-    background: rgba(10, 8, 5, 0.5); /* 半透明黑底 */
-    backdrop-filter: blur(3px);
-    border: 1px solid rgba(212, 181, 114, 0.3);
+    background: rgba(10, 8, 5, 0.45);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(212, 181, 114, 0.2);
     border-radius: 4px;
     padding: 0 16px;
     color: #fff;
@@ -250,9 +248,11 @@ body, html {
 /* --- 确定按钮 --- */
 .gf-btn {
     position: absolute;
-    bottom: -50px;
+    bottom: -45px;
+    left: 50%;
+    transform: translateX(-50%);
     width: 140px;
-    height: 34px;
+    height: 36px;
     background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
     border: 1px solid #edd39a;
     border-radius: 4px;
@@ -271,6 +271,6 @@ body, html {
 }
 
 .gf-btn:active {
-    transform: translateY(2px);
+    transform: translateX(-50%) translateY(2px);
     box-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
