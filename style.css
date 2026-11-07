@@ -170,7 +170,7 @@ body, html {
 .input-box {
     position: absolute;
     z-index: 0;
-    left: 21%;
+    left: 20%;
     width: 48%;
     height: 53px;
 }
@@ -182,7 +182,7 @@ body, html {
 
 /* 密码框：精准叠在下框架上 */
 .password-box {
-    top: 56%;
+    top: 65%;
 }
 
 /* 半透明深色铺底 + 文字区域 */
