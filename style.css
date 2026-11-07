@@ -60,8 +60,8 @@ body, html {
     background: url('bg.png') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* 完美垂直居中 */
+    align-items: center;     /* 完美水平居中 */
     opacity: 0;
     transition: opacity 1.5s ease;
 }
@@ -76,14 +76,14 @@ body, html {
     z-index: 1;
 }
 
-/* --- Top Logo (以“靈樂”两字正中间为核心) --- */
+/* --- Top Logo（修正右侧羽毛偏重问题，精准对齐“靈樂”中心） --- */
 .top-logo {
     position: relative;
     z-index: 2;
     width: 440px;
     max-width: 80vw;
-    margin-bottom: 25px;
-    margin-left: 24px; /* 向右修正偏移，保证“靈樂”正对网页垂直中线 */
+    margin-bottom: 10px;
+    margin-left: 28px; /* 向右修正偏移，保证“靈樂”正对屏幕中线 */
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
@@ -142,65 +142,59 @@ body, html {
     width: 100%;
 }
 
-/* --- 登录 UI 整体容器 --- */
+/* --- UI 容器：大图片按照原真实尺寸 700x500 展示 --- */
 .login-ui-container {
     position: relative;
     z-index: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px; /* 控制上下两个手绘框之间的间距 */
+    width: 700px;  /* 放大容器，容纳包括右侧/上方空白在内的整张 ui_bg.png */
+    height: 480px;
+    background: url('ui_bg.png') no-repeat center center / contain;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+    margin-top: -30px; /* 轻微向上提，贴合平台 */
 }
 
-/* 每一行输入框行结构 */
-.input-row {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-/* 输入框本身：背景直接使用切好的手绘藤蔓图 */
-.gf-input {
-    width: 320px;
-    height: 55px;
-    border: none;
-    outline: none;
-    padding: 0 35px; /* 让文字打在手绘框中间的空白处 */
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px #000;
-    /* 半透明衬底加在内侧，避免盖住精美边框 */
-    background-color: rgba(15, 10, 5, 0.4);
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: 100% 100%;
-    border-radius: 6px;
-}
-
-/* 上框背景图 */
-.row-top .gf-input {
-    background-image: url('input_top.png');
-}
-
-/* 下框背景图 */
-.row-bottom .gf-input {
-    background-image: url('input_bottom.png');
-}
-
-/* 右侧勾选框：记住账号 / 虚拟键盘 */
-.checkbox-label {
+/* --- 输入框包装层：直接用百分比精准贴合两个手绘框 --- */
+.input-wrapper {
     position: absolute;
-    left: 335px; /* 排在框的右侧 */
-    white-space: nowrap;
+    left: 17%;         /* 相对图片的左偏移，避开左侧珍珠 */
+    width: 61%;        /* 准确套入中间手绘长框 */
+    height: 12.5%;     /* 匹配手绘框内部高度 */
+}
+
+/* 上框（账号框）：精准落在 top 框骨架内部 */
+.login-ui-container .input-wrapper:nth-child(1) {
+    top: 24.5%;
+}
+
+/* 下框（密码框）：精准落在 bottom 框骨架内部 */
+.login-ui-container .input-wrapper:nth-child(2) {
+    top: 61%;
+}
+
+/* 右侧“记住账号 / 虚拟键盘”文字 */
+.input-header {
+    position: absolute;
+    right: -115px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.input-title {
+    display: none;
+}
+
+.checkbox-label {
     color: #ffffff;
     font-size: 13px;
-    font-weight: bold;
     display: flex;
     align-items: center;
     gap: 5px;
-    text-shadow: 1px 1px 3px #000, 0 0 5px #000;
     cursor: pointer;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px #000, 0 0 5px #000;
+    white-space: nowrap;
 }
 
 .checkbox-label input {
@@ -208,11 +202,37 @@ body, html {
     cursor: pointer;
 }
 
-/* 确定按钮 */
+/* --- 框内半透明衬底与文本输入区域 --- */
+.gf-input {
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 8, 5, 0.45); /* 45% 半透明深褐色铺底 */
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(212, 181, 114, 0.25);
+    border-radius: 4px;
+    padding: 0 16px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.gf-input:focus {
+    background: rgba(10, 8, 5, 0.7);
+    border-color: rgba(212, 181, 114, 0.8);
+    box-shadow: 0 0 10px rgba(212, 181, 114, 0.5);
+}
+
+/* --- 确定按钮（精确挂在下框正下方） --- */
 .gf-btn {
-    width: 130px;
+    position: absolute;
+    bottom: 5%;
+    left: 47%;
+    transform: translateX(-50%);
+    width: 140px;
     height: 34px;
-    margin-top: 10px;
     background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
     border: 1px solid #edd39a;
     border-radius: 4px;
@@ -231,5 +251,6 @@ body, html {
 }
 
 .gf-btn:active {
-    transform: translateY(2px);
+    transform: translateX(-50%) translateY(2px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
 }
