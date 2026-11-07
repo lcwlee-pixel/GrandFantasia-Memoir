@@ -67,7 +67,7 @@ body, html {
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding-top: 50px;
+    padding-top: 40px;
     opacity: 0;
     transition: opacity 1.5s ease;
 }
@@ -86,10 +86,10 @@ body, html {
 .top-logo {
     position: relative;
     z-index: 2;
-    width: 460px;
+    width: 440px;
     max-width: 80vw;
     margin-bottom: 20px;
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
 /* --- 右上角系統設定按鈕 --- */
@@ -127,4 +127,150 @@ body, html {
     background: rgba(30, 24, 18, 0.85);
     border: 2px solid #b89b5e;
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 0, 0
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    backdrop-filter: blur(5px);
+}
+
+.settings-title {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #7c653d;
+    padding-bottom: 8px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.volume-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.volume-control span {
+    color: #c9b078;
+    font-size: 13px;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.volume-control input[type=range] {
+    accent-color: #b89b5e;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* --- UI 容器（显示背景图片 ui_bg.png）--- */
+.login-ui-container {
+    position: relative;
+    z-index: 5;
+    width: 520px;
+    height: 280px;
+    background: url('ui_bg.png') no-repeat center center / contain;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
+}
+
+/* --- 输入框区域定位 --- */
+.input-wrapper {
+    position: relative;
+    width: 320px;
+    height: 42px;
+}
+
+/* 账号框位置 */
+.login-ui-container .input-wrapper:nth-child(1) {
+    margin-top: 55px;
+}
+
+/* 密码框位置 */
+.login-ui-container .input-wrapper:nth-child(2) {
+    margin-top: 38px;
+}
+
+/* 右侧文本标签（记住账号 / 虚拟键盘） */
+.input-header {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+}
+
+.input-title {
+    display: none; /* 隐藏原本多余的“账号/密码”文字，直接用背景框表示 */
+}
+
+.checkbox-label {
+    color: #ffffff;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px #000;
+    white-space: nowrap;
+}
+
+.checkbox-label input {
+    accent-color: #b89b5e;
+    cursor: pointer;
+}
+
+/* --- 输入框（半透明黑底衬在框内）--- */
+.gf-input {
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 8, 5, 0.5); /* 半透明黑底 */
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(212, 181, 114, 0.3);
+    border-radius: 4px;
+    padding: 0 16px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.gf-input:focus {
+    background: rgba(10, 8, 5, 0.7);
+    border-color: rgba(212, 181, 114, 0.8);
+    box-shadow: 0 0 10px rgba(212, 181, 114, 0.5);
+}
+
+/* --- 确定按钮 --- */
+.gf-btn {
+    position: absolute;
+    bottom: -50px;
+    width: 140px;
+    height: 34px;
+    background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
+    border: 1px solid #edd39a;
+    border-radius: 4px;
+    color: #2a1a08;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+    transition: all 0.1s ease;
+}
+
+.gf-btn:hover {
+    background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
+    box-shadow: 0 0 10px rgba(237, 211, 154, 0.6);
+}
+
+.gf-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+}
