@@ -63,7 +63,7 @@ body, html {
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 1.5s ease;
+    transition: opacity 1.5s ease, background-image 0.8s ease; /* 增加背景淡入淡出流畅度 */
 }
 
 .overlay {
@@ -76,7 +76,7 @@ body, html {
     z-index: 1;
 }
 
-/* --- Logo: “靈樂”二字居中，修正图片右翅膀视觉差 --- */
+/* --- Logo: “靈樂”二字居中 --- */
 .top-logo {
     position: relative;
     z-index: 2;
@@ -87,7 +87,7 @@ body, html {
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
-/* --- 右上角系統設定按鈕 --- */
+/* --- 右上角系統設定按鈕与面板 --- */
 .settings-btn {
     position: absolute;
     top: 20px;
@@ -109,7 +109,7 @@ body, html {
     position: absolute;
     top: 70px;
     right: 20px;
-    width: 220px;
+    width: 230px;
     padding: 16px;
     background: rgba(30, 24, 18, 0.85);
     border: 2px solid #b89b5e;
@@ -117,7 +117,7 @@ body, html {
     z-index: 10;
     display: none;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 .settings-title {
@@ -127,6 +127,33 @@ body, html {
     text-align: center;
     border-bottom: 1px solid #7c653d;
     padding-bottom: 8px;
+}
+
+/* 主题选择下拉框样式 */
+.setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: #c9b078;
+    font-size: 13px;
+}
+
+#theme-select {
+    width: 100%;
+    padding: 6px 10px;
+    background: rgba(15, 10, 5, 0.9);
+    color: #e6c885;
+    border: 1px solid #b89b5e;
+    border-radius: 4px;
+    outline: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#theme-select option {
+    background: #1e1812;
+    color: #e6c885;
 }
 
 .volume-control {
@@ -142,7 +169,7 @@ body, html {
     width: 100%;
 }
 
-/* --- 登录 UI 核心容器 --- */
+/* --- 登录 UI 核心容器（严格保留你的完美坐标） --- */
 .login-ui-container {
     position: relative;
     z-index: 1;
@@ -153,7 +180,6 @@ body, html {
     align-items: center;
 }
 
-/* 核心：将 ui_bg.png 图片强制展开作为 UI 层 */
 .ui-frame-img {
     position: absolute;
     top: 0;
@@ -161,12 +187,11 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    pointer-events: none; /* 防止遮挡输入框点击 */
+    pointer-events: none;
     filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.6));
     z-index: 1;
 }
 
-/* 输入框组合区域 */
 .input-box {
     position: absolute;
     z-index: 0;
@@ -175,21 +200,18 @@ body, html {
     height: 53px;
 }
 
-/* 账号框：精准叠在上框架上 */
 .account-box {
     top: 26%;
 }
 
-/* 密码框：精准叠在下框架上 */
 .password-box {
     top: 65%;
 }
 
-/* 半透明深色铺底 + 文字区域 */
 .gf-input {
     width: 100%;
     height: 100%;
-    background: rgba(10, 8, 5, 0.5); /* 半透明黑底，能看到打的字 */
+    background: rgba(10, 8, 5, 0.5);
     backdrop-filter: blur(2px);
     border: 1px solid rgba(212, 181, 114, 0.3);
     border-radius: 4px;
@@ -207,7 +229,6 @@ body, html {
     box-shadow: 0 0 8px rgba(212, 181, 114, 0.5);
 }
 
-/* 右侧多选框（记住账号 / 虚拟键盘） */
 .checkbox-label {
     position: absolute;
     right: -110px;
@@ -229,7 +250,6 @@ body, html {
     cursor: pointer;
 }
 
-/* 确定按钮 */
 .gf-btn {
     position: absolute;
     bottom: -40px;
