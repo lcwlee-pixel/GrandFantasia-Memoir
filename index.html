@@ -26,6 +26,18 @@
         
         <div id="settings-panel" class="settings-panel">
             <div class="settings-title">遊戲設定</div>
+            
+            <!-- 版本/世代背景切换 -->
+            <div class="setting-item">
+                <span class="setting-label">版本主題</span>
+                <select id="theme-select" onchange="changeTheme(this.value)">
+                    <option value="1">初代經典</option>
+                    <option value="2">二代主題</option>
+                    <option value="3">三代主題</option>
+                </select>
+            </div>
+
+            <!-- 音量控制 -->
             <div class="volume-control">
                 <span>背景音樂音量</span>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
@@ -35,12 +47,12 @@
         <!-- 正中间 Logo -->
         <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
 
-        <!-- 登錄 UI 区域 -->
+        <!-- 登錄 UI 区域（位置严格不动） -->
         <div class="login-ui-container">
-            <!-- 直接将 ui_bg.png 作为前置 UI 图片衬底 -->
+            <!-- 手绘藤蔓背景图衬底 -->
             <img src="ui_bg.png" alt="UI Frame" class="ui-frame-img">
 
-            <!-- 账号输入框（定位套在手绘上框） -->
+            <!-- 账号输入框 -->
             <div class="input-box account-box">
                 <input type="text" class="gf-input" autocomplete="off">
                 <label class="checkbox-label">
@@ -48,7 +60,7 @@
                 </label>
             </div>
 
-            <!-- 密码输入框（定位套在手绘下框） -->
+            <!-- 密码输入框 -->
             <div class="input-box password-box">
                 <input type="password" class="gf-input" autocomplete="off">
                 <label class="checkbox-label">
@@ -63,7 +75,7 @@
 
     <!-- 3. 背景音樂 (BGM) -->
     <audio id="bgm" loop preload="auto">
-        <source src="bgm.mp3" type="audio/mpeg">
+        <source id="bgm-source" src="bgm.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -71,6 +83,7 @@
         const introScreen = document.getElementById('intro-screen');
         const mainContent = document.getElementById('main-content');
         const bgm = document.getElementById('bgm');
+        const bgmSource = document.getElementById('bgm-source');
         const settingsPanel = document.getElementById('settings-panel');
         const volumeSlider = document.getElementById('volume-slider');
         
@@ -78,13 +91,34 @@
 
         bgm.volume = 0.3;
 
+        // 版本资源配置表
+        const themeData = {
+            '1': { bg: 'bg.png', music: 'bgm.mp3' },
+            '2': { bg: 'bg1.png', music: 'bgm2.mp3' },
+            '3': { bg: 'bg2.png', music: 'bgm3.mp3' }
+        };
+
+        // 切换世代主题函数
+        function changeTheme(ver) {
+            const currentData = themeData[ver];
+            if (!currentData) return;
+
+            // 1. 切换背景图
+            mainContent.style.backgroundImage = `url('${currentData.bg}')`;
+
+            // 2. 切换并无缝播放新 BGM
+            const isPlaying = !bgm.paused;
+            bgmSource.src = currentData.music;
+            bgm.load();
+            
+            if (isPlaying || introFinished) {
+                bgm.play().catch(err => console.log("BGM 播放拦截:", err));
+            }
+        }
+
         function toggleSettings(event) {
             event.stopPropagation();
-            if (settingsPanel.style.display === 'flex') {
-                settingsPanel.style.display = 'none';
-            } else {
-                settingsPanel.style.display = 'flex';
-            }
+            settingsPanel.style.display = (settingsPanel.style.display === 'flex') ? 'none' : 'flex';
         }
 
         volumeSlider.addEventListener('input', (e) => {
