@@ -32,28 +32,31 @@
             </div>
         </div>
 
-        <!-- 正中间 Logo (偏移对齐“靈樂”中心) -->
+        <!-- 正中间 Logo -->
         <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
 
         <!-- 登錄 UI 区域 -->
         <div class="login-ui-container">
-            <!-- 帳號行 -->
-            <div class="input-row row-top">
+            <!-- 直接将 ui_bg.png 作为前置 UI 图片衬底 -->
+            <img src="ui_bg.png" alt="UI Frame" class="ui-frame-img">
+
+            <!-- 账号输入框（定位套在手绘上框） -->
+            <div class="input-box account-box">
                 <input type="text" class="gf-input" autocomplete="off">
                 <label class="checkbox-label">
                     <input type="checkbox"> 記住帳號
                 </label>
             </div>
 
-            <!-- 密碼行 -->
-            <div class="input-row row-bottom">
+            <!-- 密码输入框（定位套在手绘下框） -->
+            <div class="input-box password-box">
                 <input type="password" class="gf-input" autocomplete="off">
                 <label class="checkbox-label">
                     <input type="checkbox"> 虛擬鍵盤
                 </label>
             </div>
 
-            <!-- 確定按鈕 -->
+            <!-- 确定按钮 -->
             <button class="gf-btn" onclick="handleLogin()">確定</button>
         </div>
     </div>
