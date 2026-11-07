@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grand Fantasia - 精靈樂章紀念館</title>
-    <!-- 引入分离出来的 CSS 样式表 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -33,31 +32,25 @@
             </div>
         </div>
 
-        <!-- 正中间 Logo -->
+        <!-- 正中间 Logo (偏移对齐“靈樂”中心) -->
         <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
 
-        <!-- 登錄 UI 圖片容器 -->
+        <!-- 登錄 UI 区域 -->
         <div class="login-ui-container">
             <!-- 帳號行 -->
-            <div class="input-wrapper">
-                <div class="input-header">
-                    <span class="input-title">帳號</span>
-                    <label class="checkbox-label">
-                        <input type="checkbox"> 記住帳號
-                    </label>
-                </div>
-                <input type="text" class="gf-input" placeholder="" autocomplete="off">
+            <div class="input-row row-top">
+                <input type="text" class="gf-input" autocomplete="off">
+                <label class="checkbox-label">
+                    <input type="checkbox"> 記住帳號
+                </label>
             </div>
 
             <!-- 密碼行 -->
-            <div class="input-wrapper">
-                <div class="input-header">
-                    <span class="input-title">密碼</span>
-                    <label class="checkbox-label">
-                        <input type="checkbox"> 虛擬鍵盤
-                    </label>
-                </div>
-                <input type="password" class="gf-input" placeholder="" autocomplete="off">
+            <div class="input-row row-bottom">
+                <input type="password" class="gf-input" autocomplete="off">
+                <label class="checkbox-label">
+                    <input type="checkbox"> 虛擬鍵盤
+                </label>
             </div>
 
             <!-- 確定按鈕 -->
