@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+/* 全局应用自定义鼠标指针 (左上角 0 0 为热点点击位置，auto 为后备方案) */
 body, html {
     width: 100vw;
     height: 100vh;
@@ -11,6 +12,12 @@ body, html {
     background-color: #000;
     font-family: Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
     user-select: none;
+    cursor: url('cursor.png') 0 0, auto; /* 👈 增加这行 */
+}
+
+/* 强制让所有按钮、输入框、下拉菜单和点击元素也保持自定义游戏鼠标 */
+button, input, select, label, a {
+    cursor: url('cursor.png') 0 0, pointer !important;
 }
 
 /* 1. 開場影片層 */
