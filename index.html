@@ -31,9 +31,9 @@
             <div class="setting-item">
                 <span class="setting-label">版本主題</span>
                 <select id="theme-select" onchange="changeTheme(this.value)">
-                    <option value="1">初代經典</option>
-                    <option value="2">二代主題</option>
-                    <option value="3">三代主題</option>
+                    <option value="1">初代經典 (神話水池)</option>
+                    <option value="2">二代主題 (粉彩大教堂)</option>
+                    <option value="3">三代主題 (金色祭壇)</option>
                 </select>
             </div>
 
@@ -47,7 +47,7 @@
         <!-- 正中间 Logo -->
         <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
 
-        <!-- 登錄 UI 区域（位置严格不动） -->
+        <!-- 登錄 UI 区域（位置绝对固定） -->
         <div class="login-ui-container">
             <!-- 手绘藤蔓背景图衬底 -->
             <img src="ui_bg.png" alt="UI Frame" class="ui-frame-img">
@@ -91,7 +91,7 @@
 
         bgm.volume = 0.3;
 
-        // 版本资源配置表
+        // 一至三代世代主题资源映射
         const themeData = {
             '1': { bg: 'bg.png', music: 'bgm.mp3' },
             '2': { bg: 'bg1.png', music: 'bgm2.mp3' },
@@ -103,10 +103,10 @@
             const currentData = themeData[ver];
             if (!currentData) return;
 
-            // 1. 切换背景图
+            // 1. 平滑切换背景图
             mainContent.style.backgroundImage = `url('${currentData.bg}')`;
 
-            // 2. 切换并无缝播放新 BGM
+            // 2. 无缝无卡顿切换 BGM
             const isPlaying = !bgm.paused;
             bgmSource.src = currentData.music;
             bgm.load();
