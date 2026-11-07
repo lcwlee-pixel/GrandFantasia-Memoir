@@ -60,8 +60,8 @@ body, html {
     background: url('bg.png') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 完美垂直居中 */
-    align-items: center;     /* 完美水平居中 */
+    justify-content: center;
+    align-items: center;
     opacity: 0;
     transition: opacity 1.5s ease;
 }
@@ -76,14 +76,14 @@ body, html {
     z-index: 1;
 }
 
-/* --- Top Logo（修正右侧羽毛偏重问题，精准对齐“靈樂”中心） --- */
+/* --- Top Logo --- */
 .top-logo {
     position: relative;
     z-index: 2;
     width: 440px;
     max-width: 80vw;
     margin-bottom: 10px;
-    margin-left: 28px; /* 向右修正偏移，保证“靈樂”正对屏幕中线 */
+    margin-left: 28px;
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
@@ -94,163 +94,4 @@ body, html {
     right: 20px;
     padding: 8px 16px;
     background: rgba(30, 24, 18, 0.75);
-    color: #e6c885;
-    border: 2px solid #b89b5e;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-    z-index: 10;
-}
-
-.settings-panel {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    width: 220px;
-    padding: 16px;
-    background: rgba(30, 24, 18, 0.85);
-    border: 2px solid #b89b5e;
-    border-radius: 8px;
-    z-index: 10;
-    display: none;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.settings-title {
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    text-align: center;
-    border-bottom: 1px solid #7c653d;
-    padding-bottom: 8px;
-}
-
-.volume-control {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    color: #c9b078;
-    font-size: 13px;
-}
-
-.volume-control input[type=range] {
-    accent-color: #b89b5e;
-    width: 100%;
-}
-
-/* --- UI 容器：大图片按照原真实尺寸 700x500 展示 --- */
-.login-ui-container {
-    position: relative;
-    z-index: 5;
-    width: 700px;  /* 放大容器，容纳包括右侧/上方空白在内的整张 ui_bg.png */
-    height: 480px;
-    background: url('ui_bg.png') no-repeat center center / contain;
-    filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.6));
-    margin-top: -30px; /* 轻微向上提，贴合平台 */
-}
-
-/* --- 输入框包装层：直接用百分比精准贴合两个手绘框 --- */
-.input-wrapper {
-    position: absolute;
-    left: 17%;         /* 相对图片的左偏移，避开左侧珍珠 */
-    width: 61%;        /* 准确套入中间手绘长框 */
-    height: 12.5%;     /* 匹配手绘框内部高度 */
-}
-
-/* 上框（账号框）：精准落在 top 框骨架内部 */
-.login-ui-container .input-wrapper:nth-child(1) {
-    top: 24.5%;
-}
-
-/* 下框（密码框）：精准落在 bottom 框骨架内部 */
-.login-ui-container .input-wrapper:nth-child(2) {
-    top: 61%;
-}
-
-/* 右侧“记住账号 / 虚拟键盘”文字 */
-.input-header {
-    position: absolute;
-    right: -115px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-}
-
-.input-title {
-    display: none;
-}
-
-.checkbox-label {
-    color: #ffffff;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px #000, 0 0 5px #000;
-    white-space: nowrap;
-}
-
-.checkbox-label input {
-    accent-color: #b89b5e;
-    cursor: pointer;
-}
-
-/* --- 框内半透明衬底与文本输入区域 --- */
-.gf-input {
-    width: 100%;
-    height: 100%;
-    background: rgba(10, 8, 5, 0.45); /* 45% 半透明深褐色铺底 */
-    backdrop-filter: blur(2px);
-    border: 1px solid rgba(212, 181, 114, 0.25);
-    border-radius: 4px;
-    padding: 0 16px;
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px #000;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-.gf-input:focus {
-    background: rgba(10, 8, 5, 0.7);
-    border-color: rgba(212, 181, 114, 0.8);
-    box-shadow: 0 0 10px rgba(212, 181, 114, 0.5);
-}
-
-/* --- 确定按钮（精确挂在下框正下方） --- */
-.gf-btn {
-    position: absolute;
-    bottom: 5%;
-    left: 47%;
-    transform: translateX(-50%);
-    width: 140px;
-    height: 34px;
-    background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
-    border: 1px solid #edd39a;
-    border-radius: 4px;
-    color: #2a1a08;
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
-    transition: all 0.1s ease;
-}
-
-.gf-btn:hover {
-    background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
-    box-shadow: 0 0 10px rgba(237, 211, 154, 0.6);
-}
-
-.gf-btn:active {
-    transform: translateX(-50%) translateY(2px);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.4);
-}
+    color: #e6c885
