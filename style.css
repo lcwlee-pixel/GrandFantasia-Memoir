@@ -50,11 +50,6 @@ body, html {
     z-index: 1000;
 }
 
-.skip-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: #fff;
-}
-
 /* 2. 登錄主畫面層 */
 #main-content {
     position: absolute;
@@ -65,8 +60,8 @@ body, html {
     background: url('bg.png') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 垂直居中 */
-    align-items: center;     /* 水平居中 */
+    justify-content: center;
+    align-items: center;
     opacity: 0;
     transition: opacity 1.5s ease;
 }
@@ -81,15 +76,14 @@ body, html {
     z-index: 1;
 }
 
-/* --- Top Logo（修正偏左问题，以“靈樂”为中心点） --- */
+/* --- Top Logo (以“靈樂”两字正中间为核心) --- */
 .top-logo {
     position: relative;
     z-index: 2;
-    width: 420px;
+    width: 440px;
     max-width: 80vw;
-    margin-bottom: 20px;
-    /* 向右轻微偏移 22px，抵消图片右侧翅膀/枝叶造成的视觉偏左 */
-    margin-left: 22px; 
+    margin-bottom: 25px;
+    margin-left: 24px; /* 向右修正偏移，保证“靈樂”正对网页垂直中线 */
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
@@ -106,13 +100,136 @@ body, html {
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), inset 0 0 5px rgba(184, 155, 94, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(3px);
-    transition: all 0.2s;
     z-index: 10;
-    text-shadow: 1px 1px 2px #000;
 }
 
-.settings-btn:hover {
-    background: rgba(184, 155, 94, 0.2);
-    box-shadow: 0 0 10px rgba(0, 0, 0,
+.settings-panel {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    width: 220px;
+    padding: 16px;
+    background: rgba(30, 24, 18, 0.85);
+    border: 2px solid #b89b5e;
+    border-radius: 8px;
+    z-index: 10;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.settings-title {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    border-bottom: 1px solid #7c653d;
+    padding-bottom: 8px;
+}
+
+.volume-control {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: #c9b078;
+    font-size: 13px;
+}
+
+.volume-control input[type=range] {
+    accent-color: #b89b5e;
+    width: 100%;
+}
+
+/* --- 登录 UI 整体容器 --- */
+.login-ui-container {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* 控制上下两个手绘框之间的间距 */
+}
+
+/* 每一行输入框行结构 */
+.input-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 输入框本身：背景直接使用切好的手绘藤蔓图 */
+.gf-input {
+    width: 320px;
+    height: 55px;
+    border: none;
+    outline: none;
+    padding: 0 35px; /* 让文字打在手绘框中间的空白处 */
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px #000;
+    /* 半透明衬底加在内侧，避免盖住精美边框 */
+    background-color: rgba(15, 10, 5, 0.4);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: 100% 100%;
+    border-radius: 6px;
+}
+
+/* 上框背景图 */
+.row-top .gf-input {
+    background-image: url('input_top.png');
+}
+
+/* 下框背景图 */
+.row-bottom .gf-input {
+    background-image: url('input_bottom.png');
+}
+
+/* 右侧勾选框：记住账号 / 虚拟键盘 */
+.checkbox-label {
+    position: absolute;
+    left: 335px; /* 排在框的右侧 */
+    white-space: nowrap;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-shadow: 1px 1px 3px #000, 0 0 5px #000;
+    cursor: pointer;
+}
+
+.checkbox-label input {
+    accent-color: #b89b5e;
+    cursor: pointer;
+}
+
+/* 确定按钮 */
+.gf-btn {
+    width: 130px;
+    height: 34px;
+    margin-top: 10px;
+    background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
+    border: 1px solid #edd39a;
+    border-radius: 4px;
+    color: #2a1a08;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+    transition: all 0.1s ease;
+}
+
+.gf-btn:hover {
+    background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
+    box-shadow: 0 0 10px rgba(237, 211, 154, 0.6);
+}
+
+.gf-btn:active {
+    transform: translateY(2px);
+}
