@@ -17,7 +17,7 @@
         <button class="skip-btn" onclick="finishIntro()">跳過動畫 ⏭</button>
     </div>
 
-    <!-- 2. 登錄与主界面容器 -->
+    <!-- 2. 登錄主畫面層 -->
     <div id="main-content">
         <div class="overlay"></div>
 
@@ -27,6 +27,7 @@
         <div id="settings-panel" class="settings-panel">
             <div class="settings-title">遊戲設定</div>
             
+            <!-- 版本/世代背景切换 -->
             <div class="setting-item">
                 <span class="setting-label">版本主題</span>
                 <select id="theme-select" onchange="changeTheme(this.value)">
@@ -36,73 +37,40 @@
                 </select>
             </div>
 
+            <!-- 音量控制 -->
             <div class="volume-control">
                 <span>背景音樂音量</span>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
             </div>
         </div>
 
-        <!-- ================= [A. 登錄頁面區] ================= -->
-        <div id="login-section">
-            <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
+        <!-- 正中间 Logo -->
+        <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
 
-            <div class="login-ui-container">
-                <img src="ui_bg.png" alt="UI Frame" class="ui-frame-img">
+        <!-- 登錄 UI 区域（位置严格不动） -->
+        <div class="login-ui-container">
+            <!-- 手绘藤蔓背景图衬底 -->
+            <img src="ui_bg.png" alt="UI Frame" class="ui-frame-img">
 
-                <div class="input-box account-box">
-                    <input type="text" class="gf-input" autocomplete="off">
-                    <label class="checkbox-label">
-                        <input type="checkbox"> 記住帳號
-                    </label>
-                </div>
-
-                <div class="input-box password-box">
-                    <input type="password" class="gf-input" autocomplete="off">
-                    <label class="checkbox-label">
-                        <input type="checkbox"> 虛擬鍵盤
-                    </label>
-                </div>
-
-                <button class="gf-btn" onclick="handleLogin()">登錄</button>
+            <!-- 账号输入框 -->
+            <div class="input-box account-box">
+                <input type="text" class="gf-input" autocomplete="off">
+                <label class="checkbox-label">
+                    <input type="checkbox"> 記住帳號
+                </label>
             </div>
+
+            <!-- 密码输入框 -->
+            <div class="input-box password-box">
+                <input type="password" class="gf-input" autocomplete="off">
+                <label class="checkbox-label">
+                    <input type="checkbox"> 虛擬鍵盤
+                </label>
+            </div>
+
+            <!-- 确定/登录按钮 -->
+            <button class="gf-btn" onclick="handleLogin()">登錄</button>
         </div>
-
-        <!-- ================= [B. 主頁面區 (Main Page)] ================= -->
-        <div id="main-page" class="main-page-container">
-            <!-- 顶部游戏 HUD 状态栏 -->
-            <div class="main-hud">
-                <div class="player-info">
-                    <div class="player-avatar">🧙‍♂️</div>
-                    <div class="player-status">
-                        <div class="player-name">精靈使者 <span class="player-lv">Lv.99</span></div>
-                        <div class="bar-container hp-bar"><div class="bar-fill" style="width: 100%;"></div><span>HP 9999/9999</span></div>
-                        <div class="bar-container mp-bar"><div class="bar-fill" style="width: 100%;"></div><span>MP 5000/5000</span></div>
-                    </div>
-                </div>
-                <button class="logout-btn" onclick="handleLogout()">🚪 登出/返回</button>
-            </div>
-
-            <!-- 主页中心内容区域 -->
-            <div class="main-body">
-                <h1 class="welcome-title">歡迎回到瑟斐爾大陸</h1>
-                <p class="welcome-subtitle">請選擇您要探索的紀念館區域</p>
-
-                <div class="menu-cards">
-                    <div class="menu-card" onclick="openFeature('weapon')">
-                        <div class="card-icon">⚔️</div>
-                        <div class="card-title">精靈武器百科</div>
-                        <div class="card-desc">查閱经典武器数据与制作配方</div>
-                    </div>
-
-                    <div class="menu-card" onclick="openFeature('gallery')">
-                        <div class="card-icon">📖</div>
-                        <div class="card-title">紀念館畫廊</div>
-                        <div class="card-desc">回顾三大主城与经典故事</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <!-- 3. 背景音樂 (BGM) -->
@@ -124,3 +92,102 @@
         const clickSfx = document.getElementById('click-sfx');
         const settingsPanel = document.getElementById('settings-panel');
         const volumeSlider = document.getElementById('volume-slider');
+        
+        let introFinished = false;
+
+        bgm.volume = 0.3;
+        clickSfx.volume = 0.6; // 点击音效音量设定为 0.6
+
+        // 统一播放点击音效函数（支持连续快速点击重置播放）
+        function playClickSound() {
+            clickSfx.currentTime = 0;
+            clickSfx.play().catch(err => console.log("SFX 播放拦截:", err));
+        }
+
+        // 世代主题资源映射
+        const themeData = {
+            '1': { bg: 'bg.png', music: 'bgm.mp3' },
+            '2': { bg: 'bg1.png', music: 'bgm2.mp3' },
+            '3': { bg: 'bg2.png', music: 'bgm3.mp3' }
+        };
+
+        // 切换世代主题函数
+        function changeTheme(ver) {
+            playClickSound(); // 点击切换版本时触发音效
+            const currentData = themeData[ver];
+            if (!currentData) return;
+
+            mainContent.style.backgroundImage = `url('${currentData.bg}')`;
+
+            const isPlaying = !bgm.paused;
+            bgmSource.src = currentData.music;
+            bgm.load();
+            
+            if (isPlaying || introFinished) {
+                bgm.play().catch(err => console.log("BGM 播放拦截:", err));
+            }
+        }
+
+        function toggleSettings(event) {
+            event.stopPropagation();
+            playClickSound(); // 点击设置按钮触发音效
+            settingsPanel.style.display = (settingsPanel.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        volumeSlider.addEventListener('input', (e) => {
+            bgm.volume = e.target.value;
+        });
+
+        document.addEventListener('click', (event) => {
+            // 给所有按键、多选框、下拉框绑定点击音效
+            if (event.target.tagName === 'BUTTON' || 
+                event.target.tagName === 'INPUT' || 
+                event.target.tagName === 'SELECT' || 
+                event.target.classList.contains('checkbox-label')) {
+                playClickSound();
+            }
+
+            if (introFinished && bgm.paused) {
+                bgm.play().catch(err => console.log("等待交互播放音樂: ", err));
+            }
+            
+            if (settingsPanel.style.display === 'flex' && 
+                !settingsPanel.contains(event.target) && 
+                !event.target.classList.contains('settings-btn')) {
+                settingsPanel.style.display = 'none';
+            }
+        });
+
+        function finishIntro() {
+            if (introFinished) return;
+            introFinished = true;
+            playClickSound();
+
+            introScreen.style.opacity = '0';
+            
+            if (bgm.paused) {
+                bgm.play().catch(err => console.log("自動播放被欄截: ", err));
+            }
+
+            setTimeout(() => {
+                introScreen.style.display = 'none';
+                mainContent.style.opacity = '1';
+            }, 1000);
+        }
+
+        video.addEventListener('ended', finishIntro);
+
+        function handleLogin() {
+            playClickSound();
+            alert("歡迎回到瑟斐爾大陸！");
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => console.log("Video autoplay caught."));
+            }
+        });
+    </script>
+</body>
+</html>
