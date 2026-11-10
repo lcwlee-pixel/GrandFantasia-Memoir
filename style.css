@@ -283,3 +283,188 @@ button, input, select, label, a {
 .gf-btn:active {
     transform: translateY(2px);
 }
+/* --- 页面淡入淡出动画过渡 --- */
+#login-section, #main-page {
+    transition: opacity 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+#main-page {
+    display: none;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* --- 顶部游戏 HUD 状态栏 --- */
+.main-hud {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(20, 15, 10, 0.75);
+    border: 2px solid #b89b5e;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.player-avatar {
+    width: 44px;
+    height: 44px;
+    background: #3e3222;
+    border: 2px solid #e6c885;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+}
+
+.player-status {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.player-name {
+    color: #ffe699;
+    font-size: 14px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+}
+
+.player-lv {
+    color: #ff9900;
+    font-size: 12px;
+}
+
+.bar-container {
+    width: 160px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #7c653d;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bar-container span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 9px;
+    color: #fff;
+    text-align: center;
+    line-height: 12px;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px #000;
+}
+
+.bar-fill {
+    height: 100%;
+}
+
+.hp-bar .bar-fill { background: linear-gradient(to right, #cc0000, #ff4d4d); }
+.mp-bar .bar-fill { background: linear-gradient(to right, #0055ff, #3399ff); }
+
+.logout-btn {
+    padding: 6px 14px;
+    background: rgba(140, 40, 40, 0.8);
+    color: #fff;
+    border: 1px solid #ff9999;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.logout-btn:hover {
+    background: rgba(180, 40, 40, 1);
+}
+
+/* --- 主页中心内容与卡片 --- */
+.main-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.welcome-title {
+    color: #ffe699;
+    font-size: 32px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 12px rgba(230, 200, 133, 0.5);
+    letter-spacing: 2px;
+}
+
+.welcome-subtitle {
+    color: #d4c29d;
+    font-size: 15px;
+    text-shadow: 1px 1px 4px #000;
+}
+
+.menu-cards {
+    display: flex;
+    gap: 30px;
+    margin-top: 15px;
+}
+
+.menu-card {
+    width: 220px;
+    height: 160px;
+    background: rgba(30, 24, 18, 0.85);
+    border: 2px solid #b89b5e;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.menu-card:hover {
+    transform: translateY(-6px);
+    border-color: #ffe699;
+    box-shadow: 0 10px 25px rgba(230, 200, 133, 0.3);
+}
+
+.card-icon {
+    font-size: 36px;
+}
+
+.card-title {
+    color: #e6c885;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-desc {
+    color: #a89878;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.3;
+}
