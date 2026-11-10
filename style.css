@@ -1,285 +1,257 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/* --- 主界面大厅导航按钮 --- */
+.lobby-menu {
+    display: none;
+    position: relative;
+    z-index: 10;
+    margin-top: 20px;
 }
 
-/* 全局应用自定义鼠标指针 (左上角 0 0 为热点点击位置，auto 为后备方案) */
-body, html {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background-color: #000;
-    font-family: Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
-    user-select: none;
-    cursor: url('cursor.png') 0 0, auto; /* 👈 增加这行 */
+.lobby-btn {
+    padding: 12px 28px;
+    background: linear-gradient(to bottom, #edd39a 0%, #8c6d33 100%);
+    border: 2px solid #fff2cb;
+    border-radius: 6px;
+    color: #2a1a08;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    transition: transform 0.2s, background 0.2s;
 }
 
-/* 强制让所有按钮、输入框、下拉菜单和点击元素也保持自定义游戏鼠标 */
-button, input, select, label, a {
-    cursor: url('cursor.png') 0 0, pointer !important;
+.lobby-btn:hover {
+    transform: scale(1.05);
+    background: linear-gradient(to bottom, #fff0c7 0%, #a88441 100%);
 }
 
-/* 1. 開場影片層 */
-#intro-screen {
+/* --- 武器百科遮罩与 GF 游戏窗口 --- */
+.weapon-modal {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 999;
-    background-color: #000;
-    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
     justify-content: center;
     align-items: center;
-    transition: opacity 1s ease;
 }
 
-#intro-video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.skip-btn {
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    padding: 8px 20px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s;
-    z-index: 1000;
-}
-
-/* 2. 登錄主畫面層 */
-#main-content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('bg.png') no-repeat center center/cover;
+.wiki-window {
+    width: 680px;
+    height: 480px;
+    background: #6a6356;
+    border: 4px ridge #d4c29d;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    padding: 4px;
+    color: #fff;
+    font-size: 13px;
+}
+
+/* 标题栏 */
+.wiki-header {
+    height: 30px;
+    background: linear-gradient(to right, #4a4338, #2a251d);
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    opacity: 0;
-    transition: opacity 1.5s ease, background-image 0.8s ease; /* 增加背景淡入淡出流畅度 */
+    padding: 0 8px;
+    border-bottom: 2px solid #8c7d6b;
 }
 
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.1);
-    z-index: 1;
-}
-
-/* --- Logo: “靈樂”二字居中 --- */
-.top-logo {
-    position: relative;
-    z-index: 2;
-    width: 520px;
-    max-width: 80vw;
-    margin-bottom: 5px;
-    margin-left: 27px;
-    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
-}
-
-/* --- 右上角系統設定按鈕与面板 --- */
-.settings-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 8px 16px;
-    background: rgba(30, 24, 18, 0.75);
-    color: #e6c885;
-    border: 2px solid #b89b5e;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
+.wiki-title {
+    color: #e6cb85;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-    z-index: 10;
+    font-size: 13px;
 }
 
-.settings-panel {
-    position: absolute;
-    top: 70px;
-    right: 20px;
-    width: 230px;
-    padding: 16px;
-    background: rgba(30, 24, 18, 0.85);
-    border: 2px solid #b89b5e;
-    border-radius: 8px;
-    z-index: 10;
-    display: none;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.settings-title {
+.wiki-close-btn {
+    background: #8c3a3a;
     color: #fff;
-    font-size: 15px;
+    border: 1px solid #ff9999;
+    width: 20px;
+    height: 20px;
+    line-height: 18px;
+    cursor: pointer;
+    font-size: 12px;
     font-weight: bold;
-    text-align: center;
-    border-bottom: 1px solid #7c653d;
-    padding-bottom: 8px;
 }
 
-/* 主题选择下拉框样式 */
-.setting-item {
+/* 左右面板区域 */
+.wiki-body {
     display: flex;
-    flex-direction: column;
+    flex: 1;
     gap: 6px;
-    color: #c9b078;
-    font-size: 13px;
+    padding: 6px 0;
 }
 
-#theme-select {
-    width: 100%;
-    padding: 6px 10px;
-    background: rgba(15, 10, 5, 0.9);
-    color: #e6c885;
-    border: 1px solid #b89b5e;
-    border-radius: 4px;
-    outline: none;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-#theme-select option {
-    background: #1e1812;
-    color: #e6c885;
-}
-
-.volume-control {
+.wiki-left-panel, .wiki-right-panel {
+    background: #544d41;
+    border: 2px inset #3e382f;
+    border-radius: 2px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
+}
+
+.wiki-left-panel {
+    width: 48%;
+}
+
+.wiki-right-panel {
+    width: 52%;
+    justify-content: space-between;
+}
+
+/* 左侧标题栏 */
+.wiki-category-header {
+    display: flex;
+    align-items: center;
     gap: 8px;
-    color: #c9b078;
-    font-size: 13px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #706758;
 }
 
-.volume-control input[type=range] {
-    accent-color: #b89b5e;
-    width: 100%;
-}
-
-/* --- 登录 UI 核心容器（严格保留你的完美坐标） --- */
-.login-ui-container {
-    position: relative;
-    z-index: 1;
-    width: 440px;
-    height: 240px;
+.weapon-icon-box {
+    width: 32px;
+    height: 32px;
+    background: #2a251d;
+    border: 1px solid #b89b5e;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.ui-frame-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    pointer-events: none;
-    filter: drop-shadow(0 6px 15px rgba(0, 0, 0, 0.6));
-    z-index: 1;
-}
-
-.input-box {
-    position: absolute;
-    z-index: 0;
-    left: 20%;
-    width: 48%;
-    height: 53px;
-}
-
-.account-box {
-    top: 26%;
-}
-
-.password-box {
-    top: 65%;
-}
-
-.gf-input {
-    width: 100%;
-    height: 100%;
-    background: rgba(10, 8, 5, 0.5);
-    backdrop-filter: blur(2px);
-    border: 1px solid rgba(212, 181, 114, 0.3);
-    border-radius: 4px;
-    padding: 0 14px;
-    color: #fff;
-    font-size: 15px;
+.weapon-type-name {
+    color: #ffe699;
     font-weight: bold;
-    text-shadow: 1px 1px 2px #000;
-    outline: none;
+    font-size: 14px;
 }
 
-.gf-input:focus {
-    background: rgba(10, 8, 5, 0.75);
-    border-color: rgba(212, 181, 114, 0.8);
-    box-shadow: 0 0 8px rgba(212, 181, 114, 0.5);
+.wiki-checkboxes {
+    margin-left: auto;
+    font-size: 11px;
+    color: #d4c29d;
+    display: flex;
+    flex-direction: column;
 }
 
-.checkbox-label {
-    position: absolute;
-    right: -110px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #ffffff;
-    font-size: 13px;
+/* 分类树 */
+.tree-view {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 6px;
+    background: #423c32;
+    padding: 6px;
+    border: 1px solid #2e2a23;
+}
+
+.tree-node {
+    cursor: pointer;
+    color: #eeddbb;
+    font-weight: bold;
+    padding: 3px 0;
+}
+
+.tree-children {
+    padding-left: 14px;
+}
+
+.tree-item {
+    cursor: pointer;
+    color: #cccccc;
+    padding: 3px 0;
+    transition: color 0.1s;
+}
+
+.tree-item:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.orange-item {
+    color: #ffaa33;
+    font-weight: bold;
+}
+
+/* 右侧详情 */
+.detail-section {
+    background: #423c32;
+    border: 1px solid #2e2a23;
+    padding: 8px;
+    margin-bottom: 6px;
+    flex: 1;
+}
+
+.section-title {
+    color: #e6cb85;
+    font-weight: bold;
+    margin-bottom: 6px;
+    border-bottom: 1px dashed #665c4d;
+    padding-bottom: 4px;
+}
+
+.weapon-detail-box, .materials-box {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.empty-tip {
+    color: #888;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* 钱币与耗费栏 */
+.cost-bar {
+    background: #363128;
+    padding: 6px;
+    border: 1px solid #29251f;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.currency-group {
     display: flex;
     align-items: center;
     gap: 4px;
+}
+
+.coin {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.gold { background: #ffd700; border: 1px solid #b8860b; }
+.silver { background: #c0c0c0; border: 1px solid #808080; }
+.copper { background: #b87333; border: 1px solid #8b4513; }
+
+/* 窗口底部按钮 */
+.wiki-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: 4px;
+}
+
+.gf-dialog-btn {
+    padding: 4px 16px;
+    background: linear-gradient(to bottom, #b89b5e, #6e5831);
+    border: 1px solid #d4c29d;
+    color: #fff;
+    border-radius: 3px;
     cursor: pointer;
-    font-weight: bold;
-    text-shadow: 1px 1px 3px #000, 0 0 5px #000;
-    white-space: nowrap;
+    font-size: 12px;
 }
 
-.checkbox-label input {
-    accent-color: #b89b5e;
-    cursor: pointer;
-}
-
-.gf-btn {
-    left: 30%;
-    position: absolute;
-    bottom: -40px;
-    z-index: 3;
-    width: 130px;
-    height: 34px;
-    background: linear-gradient(to bottom, #d4b572 0%, #8c6d33 100%);
-    border: 1px solid #edd39a;
-    border-radius: 4px;
-    color: #2a1a08;
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.4);
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.5);
-    transition: all 0.1s ease;
-}
-
-.gf-btn:hover {
-    background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
-}
-
-.gf-btn:active {
-    transform: translateY(2px);
+.gf-dialog-btn:hover {
+    background: linear-gradient(to bottom, #d4c29d, #8c7443);
 }
