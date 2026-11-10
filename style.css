@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-/* 全局应用自定义鼠标指针 (左上角 0 0 为热点点击位置，auto 为后备方案) */
+/* 全局應用自定義鼠標指針 */
 body, html {
     width: 100vw;
     height: 100vh;
@@ -15,7 +15,7 @@ body, html {
     cursor: url('cursor.png') 0 0, auto;
 }
 
-/* 强制让所有按钮、输入框、下拉菜单和点击元素也保持自定义游戏鼠标 */
+/* 強制點擊元素保持遊戲鼠標 */
 button, input, select, label, a {
     cursor: url('cursor.png') 0 0, pointer !important;
 }
@@ -27,12 +27,13 @@ button, input, select, label, a {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 999;
+    z-index: 9999;
     background-color: #000;
     display: flex;
     justify-content: center;
     align-items: center;
     transition: opacity 1s ease;
+    cursor: pointer;
 }
 
 #intro-video {
@@ -43,18 +44,24 @@ button, input, select, label, a {
 
 .skip-btn {
     position: absolute;
-    bottom: 30px;
-    right: 30px;
-    padding: 8px 20px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    bottom: 40px;
+    right: 40px;
+    padding: 10px 24px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #ffe699;
+    border: 2px solid #b89b5e;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: bold;
     backdrop-filter: blur(5px);
     transition: all 0.3s;
-    z-index: 1000;
+    z-index: 10001;
+}
+
+.skip-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: #ffe699;
 }
 
 /* 2. 登錄主畫面層 */
@@ -83,7 +90,7 @@ button, input, select, label, a {
     z-index: 1;
 }
 
-/* --- Logo: “靈樂”二字居中 --- */
+/* --- Logo --- */
 .top-logo {
     position: relative;
     z-index: 2;
@@ -94,7 +101,7 @@ button, input, select, label, a {
     filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.7));
 }
 
-/* --- 右上角系統設定按鈕与面板 --- */
+/* --- 右上角系統設定 --- */
 .settings-btn {
     position: absolute;
     top: 20px;
@@ -136,7 +143,6 @@ button, input, select, label, a {
     padding-bottom: 8px;
 }
 
-/* 主题选择下拉框样式 */
 .setting-item {
     display: flex;
     flex-direction: column;
@@ -176,7 +182,7 @@ button, input, select, label, a {
     width: 100%;
 }
 
-/* --- 登录 UI 核心容器（坐标已锁定） --- */
+/* --- 登錄 UI 容器 --- */
 .login-ui-container {
     position: relative;
     z-index: 1;
@@ -207,13 +213,8 @@ button, input, select, label, a {
     height: 53px;
 }
 
-.account-box {
-    top: 26%;
-}
-
-.password-box {
-    top: 65%;
-}
+.account-box { top: 26%; }
+.password-box { top: 65%; }
 
 .gf-input {
     width: 100%;
@@ -252,10 +253,7 @@ button, input, select, label, a {
     white-space: nowrap;
 }
 
-.checkbox-label input {
-    accent-color: #b89b5e;
-    cursor: pointer;
-}
+.checkbox-label input { accent-color: #b89b5e; cursor: pointer; }
 
 .gf-btn {
     position: absolute;
@@ -276,14 +274,10 @@ button, input, select, label, a {
     transition: all 0.1s ease;
 }
 
-.gf-btn:hover {
-    background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%);
-}
+.gf-btn:hover { background: linear-gradient(to bottom, #e3c683 0%, #9e7e42 100%); }
+.gf-btn:active { transform: translateY(2px); }
 
-.gf-btn:active {
-    transform: translateY(2px);
-}
-/* --- 页面淡入淡出动画过渡 --- */
+/* --- 頁面切換 --- */
 #login-section, #main-page {
     transition: opacity 0.5s ease;
     display: flex;
@@ -303,7 +297,7 @@ button, input, select, label, a {
     padding: 20px;
 }
 
-/* --- 顶部游戏 HUD 状态栏 --- */
+/* 頂部 HUD */
 .main-hud {
     width: 100%;
     display: flex;
@@ -317,154 +311,146 @@ button, input, select, label, a {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
 }
 
-.player-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
+.player-info { display: flex; align-items: center; gap: 12px; }
 .player-avatar {
-    width: 44px;
-    height: 44px;
-    background: #3e3222;
-    border: 2px solid #e6c885;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
+    width: 44px; height: 44px; background: #3e3222;
+    border: 2px solid #e6c885; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
 }
-
-.player-status {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.player-name {
-    color: #ffe699;
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px #000;
-}
-
-.player-lv {
-    color: #ff9900;
-    font-size: 12px;
-}
+.player-status { display: flex; flex-direction: column; gap: 4px; }
+.player-name { color: #ffe699; font-size: 14px; font-weight: bold; text-shadow: 1px 1px 2px #000; }
+.player-lv { color: #ff9900; font-size: 12px; }
 
 .bar-container {
-    width: 160px;
-    height: 12px;
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid #7c653d;
-    border-radius: 6px;
-    position: relative;
-    overflow: hidden;
+    width: 160px; height: 12px; background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #7c653d; border-radius: 6px; position: relative; overflow: hidden;
 }
-
 .bar-container span {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-size: 9px;
-    color: #fff;
-    text-align: center;
-    line-height: 12px;
-    font-weight: bold;
-    text-shadow: 1px 1px 1px #000;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    font-size: 9px; color: #fff; text-align: center; line-height: 12px; font-weight: bold; text-shadow: 1px 1px 1px #000;
 }
-
-.bar-fill {
-    height: 100%;
-}
-
+.bar-fill { height: 100%; }
 .hp-bar .bar-fill { background: linear-gradient(to right, #cc0000, #ff4d4d); }
 .mp-bar .bar-fill { background: linear-gradient(to right, #0055ff, #3399ff); }
 
 .logout-btn {
-    padding: 6px 14px;
-    background: rgba(140, 40, 40, 0.8);
-    color: #fff;
-    border: 1px solid #ff9999;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: bold;
-    transition: background 0.2s;
+    padding: 6px 14px; background: rgba(140, 40, 40, 0.8);
+    color: #fff; border: 1px solid #ff9999; border-radius: 4px;
+    cursor: pointer; font-size: 13px; font-weight: bold; transition: background 0.2s;
 }
+.logout-btn:hover { background: rgba(180, 40, 40, 1); }
 
-.logout-btn:hover {
-    background: rgba(180, 40, 40, 1);
-}
-
-/* --- 主页中心内容与卡片 --- */
-.main-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 40px;
-}
-
-.welcome-title {
-    color: #ffe699;
-    font-size: 32px;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 12px rgba(230, 200, 133, 0.5);
-    letter-spacing: 2px;
-}
-
-.welcome-subtitle {
-    color: #d4c29d;
-    font-size: 15px;
-    text-shadow: 1px 1px 4px #000;
-}
-
-.menu-cards {
-    display: flex;
-    gap: 30px;
-    margin-top: 15px;
-}
+/* 主頁中心卡片 */
+.main-body { display: flex; flex-direction: column; align-items: center; gap: 15px; margin-bottom: 40px; }
+.welcome-title { color: #ffe699; font-size: 32px; text-shadow: 2px 2px 8px rgba(0,0,0,0.9); letter-spacing: 2px; }
+.welcome-subtitle { color: #d4c29d; font-size: 15px; text-shadow: 1px 1px 4px #000; }
+.menu-cards { display: flex; gap: 30px; margin-top: 15px; }
 
 .menu-card {
-    width: 220px;
-    height: 160px;
-    background: rgba(30, 24, 18, 0.85);
-    border: 2px solid #b89b5e;
-    border-radius: 10px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    cursor: pointer;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    width: 220px; height: 160px; background: rgba(30, 24, 18, 0.85);
+    border: 2px solid #b89b5e; border-radius: 10px; padding: 20px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 10px; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px); transition: transform 0.3s, border-color 0.3s;
+}
+.menu-card:hover { transform: translateY(-6px); border-color: #ffe699; }
+.card-icon { font-size: 36px; }
+.card-title { color: #e6c885; font-size: 18px; font-weight: bold; }
+.card-desc { color: #a89878; font-size: 12px; text-align: center; line-height: 1.3; }
+
+/* 武器百科全屏頁 (完美比例) */
+.weapon-page-container {
+    display: none; position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh; background-color: #1f1a14;
+    z-index: 1500; flex-direction: column; align-items: center; justify-content: flex-start; padding: 20px;
+    box-sizing: border-box;
+}
+.weapon-nav-bar { width: 100%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.back-home-btn { padding: 6px 16px; background: #3a2e22; color: #e6c885; border: 1px solid #b89b5e; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
+.page-title { color: #ffe699; font-size: 20px; font-weight: bold; }
+
+.gf-craft-window {
+    width: 1200px; max-width: 95vw; height: calc(100vh - 120px); max-height: 850px; min-height: 580px;
+    background: #807668; border: 3px double #ded1b8; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    display: flex; flex-direction: column; padding: 4px; color: #000; box-sizing: border-box;
+}
+.gf-craft-header { height: 28px; background: #6e6456; display: flex; justify-content: space-between; align-items: center; padding: 0 8px; border-bottom: 1px solid #524a3e; flex-shrink: 0; }
+.gf-title-text { color: #ffff99; font-weight: bold; font-size: 13px; }
+.gf-close-x { background: #8c3a3a; color: #fff; border: 1px solid #ff9999; width: 18px; height: 18px; cursor: pointer; font-size: 11px; line-height: 16px; }
+
+.gf-craft-body { display: flex; flex: 1; gap: 6px; padding: 6px 0; min-height: 0; }
+.craft-panel { background: #73695b; border: 2px inset #ded1b8; padding: 8px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; min-height: 0; }
+.left-panel { width: 28%; }
+.middle-panel { width: 40%; }
+.right-panel { width: 32%; }
+
+.panel-header-item { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #5a5144; padding-bottom: 6px; flex-shrink: 0; }
+.icon-box { width: 32px; height: 32px; background: #3a2e22; border: 1px solid #b89b5e; display: flex; align-items: center; justify-content: center; }
+.type-title { color: #fff; font-weight: bold; }
+.chk-group { margin-left: auto; font-size: 11px; color: #fff; }
+
+.tree-container { flex: 1; background: #544c41; border: 1px inset #3a2e22; margin-top: 6px; padding: 6px; overflow-y: auto; }
+.tree-node { color: #ffe699; font-weight: bold; cursor: pointer; padding: 3px 0; }
+.tree-sub { padding-left: 14px; }
+.tree-item { color: #ddd; cursor: pointer; padding: 3px 0; font-size: 13px; }
+
+.middle-panel .info-section:first-child { background: #544c41; border: 1px inset #3a2e22; padding: 8px; margin-bottom: 6px; flex: 1; overflow-y: auto; min-height: 0; }
+.middle-panel .info-section:nth-child(2) { background: #544c41; border: 1px inset #3a2e22; padding: 8px; margin-bottom: 6px; height: 130px; flex-shrink: 0; overflow-y: auto; }
+
+.yellow-label { color: #ffff00; font-weight: bold; font-size: 13px; margin-bottom: 6px; }
+.yellow-label.inline { display: inline-block; margin-bottom: 0; }
+.stats-box, .mats-box { color: #fff; font-size: 12px; }
+.tip { color: #aaa; }
+
+.bottom-cost-area { background: #423b32; border: 1px inset #2e2822; padding: 6px; font-size: 12px; color: #fff; flex-shrink: 0; }
+.coins { display: inline-flex; align-items: center; gap: 4px; margin: 0 4px; }
+.coin-icon { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.coin-icon.gold { background: #ffd700; }
+.coin-icon.silver { background: #c0c0c0; }
+.coin-icon.copper { background: #b87333; }
+
+/* --- 右欄：武器圖鑑展示區 --- */
+.image-display-frame { 
+    flex: 1; 
+    background: url('weapon/wpbg.jpg') no-repeat center center/contain;
+    border: 2px inset #2a241d; 
+    margin-top: 6px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    position: relative; 
+    overflow: hidden; 
+    min-height: 0;
+    padding: 15px; 
 }
 
-.menu-card:hover {
-    transform: translateY(-6px);
-    border-color: #ffe699;
-    box-shadow: 0 10px 25px rgba(230, 200, 133, 0.3);
+#weapon-preview-img { 
+    max-width: 80%; 
+    max-height: 85%; 
+    object-fit: contain; 
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
 }
 
-.card-icon {
-    font-size: 36px;
+.gf-craft-footer { 
+    display: flex; 
+    justify-content: flex-end; 
+    gap: 8px; 
+    padding-top: 4px; 
+    flex-shrink: 0;
+}
+.gf-win-btn { 
+    padding: 4px 18px; 
+    background: linear-gradient(to bottom, #d4c29d, #7c6d53); 
+    border: 1px solid #fff; 
+    color: #000; 
+    font-weight: bold; 
+    cursor: pointer; 
+    font-size: 12px; 
 }
 
-.card-title {
-    color: #e6c885;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.card-desc {
-    color: #a89878;
-    font-size: 12px;
-    text-align: center;
-    line-height: 1.3;
+.gf-tooltip-content {
+    background: rgba(30, 24, 18, 0.95);
+    border: 1px solid #665544;
+    padding: 10px; font-size: 12px; line-height: 1.5;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
 }

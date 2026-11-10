@@ -14,7 +14,7 @@
             <source src="logo.mp4" type="video/mp4">
             您的瀏覽器不支持 HTML5 影片播放。
         </video>
-        <button class="skip-btn" onclick="finishIntro()">跳過動畫 ⏭</button>
+        <button id="skip-btn" class="skip-btn" onclick="finishIntro(event)">跳過動畫 ⏭</button>
     </div>
 
     <!-- 2. 登錄与主界面容器 -->
@@ -82,23 +82,113 @@
                 <button class="logout-btn" onclick="handleLogout()">🚪 登出/返回</button>
             </div>
 
-            <!-- 主页中心内容区域 -->
+            <!-- 主页中心卡片区 -->
             <div class="main-body">
                 <h1 class="welcome-title">歡迎回到瑟斐爾大陸</h1>
                 <p class="welcome-subtitle">請選擇您要探索的紀念館區域</p>
 
                 <div class="menu-cards">
-                    <div class="menu-card" onclick="openFeature('weapon')">
+                    <div class="menu-card" onclick="openWeaponPage()">
                         <div class="card-icon">⚔️</div>
                         <div class="card-title">精靈武器百科</div>
-                        <div class="card-desc">查閱经典武器数据与制作配方</div>
+                        <div class="card-desc">查閱經典武器數據與製作配方</div>
                     </div>
 
-                    <div class="menu-card" onclick="openFeature('gallery')">
+                    <div class="menu-card" onclick="alert('【紀念館畫廊】開發中...')">
                         <div class="card-icon">📖</div>
                         <div class="card-title">紀念館畫廊</div>
-                        <div class="card-desc">回顾三大主城与经典故事</div>
+                        <div class="card-desc">回顧三大主城與經典故事</div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= [C. 武器百科獨立全屏頁面] ================= -->
+        <div id="weapon-page" class="weapon-page-container">
+            <div class="weapon-nav-bar">
+                <button class="back-home-btn" onclick="closeWeaponPage()">⬅ 返回主頁面</button>
+                <span class="page-title">精靈武器百科大典</span>
+            </div>
+
+            <div class="gf-craft-window">
+                <div class="gf-craft-header">
+                    <span class="gf-title-text">製作成功機率...</span>
+                    <button class="gf-close-x" onclick="closeWeaponPage()">X</button>
+                </div>
+
+                <div class="gf-craft-body">
+                    <!-- 1. 左栏：分类树 (包含单手剑与双手剑分类) -->
+                    <div class="craft-panel left-panel">
+                        <div class="panel-header-item">
+                            <div class="icon-box">🗡️</div>
+                            <span class="type-title">劍類製造</span>
+                            <div class="chk-group">
+                                <label><input type="checkbox" checked> 顯示可執行</label>
+                                <label><input type="checkbox"> 過濾灰色項目</label>
+                            </div>
+                        </div>
+
+                        <div class="tree-container">
+                            <!-- 单手剑分类 -->
+                            <div class="tree-node" onclick="toggleTree('onehand-tree')">
+                                <span class="tree-icon">-</span> 單手劍
+                            </div>
+                            <div id="onehand-tree" class="tree-sub">
+                                <div class="tree-item" onclick="selectWeapon('sword_evil')" style="color: #ff8000; font-weight: bold;">└ 邪殺劍</div>
+                                <div class="tree-item" onclick="selectWeapon('sword_dawn')" style="color: #ff8000; font-weight: bold;">└ 晨曦之劍</div>
+                            </div>
+
+                            <!-- 双手剑分类 -->
+                            <div class="tree-node" onclick="toggleTree('twohand-tree')" style="margin-top: 6px;">
+                                <span class="tree-icon">-</span> 雙手劍
+                            </div>
+                            <div id="twohand-tree" class="tree-sub">
+                                <div class="tree-item" onclick="selectWeapon('sword_eye')" style="color: #ff8000; font-weight: bold;">└ 巨劍·信念之眼</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. 中栏：属性与制作配方 -->
+                    <div class="craft-panel middle-panel">
+                        <div class="info-section">
+                            <div class="yellow-label">製作物品</div>
+                            <div id="weapon-stats-box" class="stats-box">
+                                <div class="tip">請從左側選擇一件武器</div>
+                            </div>
+                        </div>
+
+                        <div class="info-section">
+                            <div class="yellow-label">所需材料</div>
+                            <div id="weapon-mats-box" class="mats-box">--</div>
+                        </div>
+
+                        <div class="bottom-cost-area">
+                            <span class="yellow-label inline">所需費用:</span>
+                            <div class="coins">
+                                <span id="c-gold">0</span><i class="coin-icon gold"></i>
+                                <span id="c-silver">0</span><i class="coin-icon silver"></i>
+                                <span id="c-copper">0</span><i class="coin-icon copper"></i>
+                            </div>
+                            <span class="yellow-label inline time-label">花費時間: <span id="c-time">0秒</span></span>
+                        </div>
+                    </div>
+
+                    <!-- 3. 右栏：武器图片展示区 -->
+                    <div class="craft-panel right-panel">
+                        <div class="yellow-label">武器圖鑑展示</div>
+                        <div class="image-display-frame">
+                            <img id="weapon-preview-img" src="" alt="" style="display:none;">
+                            <div id="image-placeholder" class="placeholder-text">
+                                <span>🗡️</span>
+                                <span>武器大圖展示區域</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gf-craft-footer">
+                    <button class="gf-win-btn" onclick="closeWeaponPage()">確定</button>
+                    <button class="gf-win-btn" onclick="closeWeaponPage()">關閉</button>
                 </div>
             </div>
         </div>
@@ -115,139 +205,7 @@
         <source src="click.mp3" type="audio/mpeg">
     </audio>
 
-    <script>
-        const video = document.getElementById('intro-video');
-        const introScreen = document.getElementById('intro-screen');
-        const mainContent = document.getElementById('main-content');
-        const bgm = document.getElementById('bgm');
-        const bgmSource = document.getElementById('bgm-source');
-        const clickSfx = document.getElementById('click-sfx');
-        const settingsPanel = document.getElementById('settings-panel');
-        const volumeSlider = document.getElementById('volume-slider');
-        
-        let introFinished = false;
-
-        bgm.volume = 0.3;
-        clickSfx.volume = 0.6;
-
-        function playClickSound() {
-            clickSfx.currentTime = 0;
-            clickSfx.play().catch(err => console.log("SFX 播放拦截:", err));
-        }
-
-        const themeData = {
-            '1': { bg: 'bg.png', music: 'bgm.mp3' },
-            '2': { bg: 'bg1.png', music: 'bgm2.mp3' },
-            '3': { bg: 'bg2.png', music: 'bgm3.mp3' }
-        };
-
-        function changeTheme(ver) {
-            playClickSound();
-            const currentData = themeData[ver];
-            if (!currentData) return;
-
-            mainContent.style.backgroundImage = `url('${currentData.bg}')`;
-
-            const isPlaying = !bgm.paused;
-            bgmSource.src = currentData.music;
-            bgm.load();
-            
-            if (isPlaying || introFinished) {
-                bgm.play().catch(err => console.log("BGM 播放拦截:", err));
-            }
-        }
-
-        function toggleSettings(event) {
-            event.stopPropagation();
-            playClickSound();
-            settingsPanel.style.display = (settingsPanel.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        volumeSlider.addEventListener('input', (e) => {
-            bgm.volume = e.target.value;
-        });
-
-        document.addEventListener('click', (event) => {
-            if (event.target.tagName === 'BUTTON' || 
-                event.target.tagName === 'INPUT' || 
-                event.target.tagName === 'SELECT' || 
-                event.target.classList.contains('checkbox-label') ||
-                event.target.classList.contains('menu-card')) {
-                playClickSound();
-            }
-
-            if (introFinished && bgm.paused) {
-                bgm.play().catch(err => console.log("等待交互播放音樂: ", err));
-            }
-            
-            if (settingsPanel.style.display === 'flex' && 
-                !settingsPanel.contains(event.target) && 
-                !event.target.classList.contains('settings-btn')) {
-                settingsPanel.style.display = 'none';
-            }
-        });
-
-        function finishIntro() {
-            if (introFinished) return;
-            introFinished = true;
-            playClickSound();
-
-            introScreen.style.opacity = '0';
-            
-            if (bgm.paused) {
-                bgm.play().catch(err => console.log("自動播放被攔截: ", err));
-            }
-
-            setTimeout(() => {
-                introScreen.style.display = 'none';
-                mainContent.style.opacity = '1';
-            }, 1000);
-        }
-
-        video.addEventListener('ended', finishIntro);
-
-        // --- 登錄与主页面切换逻辑 ---
-        function handleLogin() {
-            playClickSound();
-            const loginSec = document.getElementById('login-section');
-            const mainPage = document.getElementById('main-page');
-
-            loginSec.style.opacity = '0';
-            setTimeout(() => {
-                loginSec.style.display = 'none';
-                mainPage.style.display = 'flex';
-                setTimeout(() => { mainPage.style.opacity = '1'; }, 50);
-            }, 500);
-        }
-
-        function handleLogout() {
-            playClickSound();
-            const loginSec = document.getElementById('login-section');
-            const mainPage = document.getElementById('main-page');
-
-            mainPage.style.opacity = '0';
-            setTimeout(() => {
-                mainPage.style.display = 'none';
-                loginSec.style.display = 'flex';
-                setTimeout(() => { loginSec.style.opacity = '1'; }, 50);
-            }, 500);
-        }
-
-        function openFeature(name) {
-            playClickSound();
-            if (name === 'weapon') {
-                alert("即將進入【精靈武器百科】面板！");
-            } else {
-                alert("【紀念館畫廊】功能開發中...");
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => console.log("Video autoplay caught."));
-            }
-        });
-    </script>
+    <!-- 引入独立的 JavaScript 脚本 -->
+    <script src="script.js"></script>
 </body>
 </html>
