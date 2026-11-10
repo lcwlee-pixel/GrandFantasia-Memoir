@@ -27,7 +27,6 @@
         <div id="settings-panel" class="settings-panel">
             <div class="settings-title">遊戲設定</div>
             
-            <!-- 版本/世代背景切换 -->
             <div class="setting-item">
                 <span class="setting-label">版本主題</span>
                 <select id="theme-select" onchange="changeTheme(this.value)">
@@ -37,7 +36,6 @@
                 </select>
             </div>
 
-            <!-- 音量控制 -->
             <div class="volume-control">
                 <span>背景音樂音量</span>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.3">
@@ -45,14 +43,12 @@
         </div>
 
         <!-- 正中间 Logo -->
-        <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo">
+        <img src="gf.png" alt="Grand Fantasia Logo" class="top-logo" id="top-logo">
 
-        <!-- 登錄 UI 区域（位置严格不动） -->
-        <div class="login-ui-container">
-            <!-- 手绘藤蔓背景图衬底 -->
+        <!-- 登錄 UI 区域 -->
+        <div class="login-ui-container" id="login-ui-container">
             <img src="ui_bg.png" alt="UI Frame" class="ui-frame-img">
 
-            <!-- 账号输入框 -->
             <div class="input-box account-box">
                 <input type="text" class="gf-input" autocomplete="off">
                 <label class="checkbox-label">
@@ -60,7 +56,6 @@
                 </label>
             </div>
 
-            <!-- 密码输入框 -->
             <div class="input-box password-box">
                 <input type="password" class="gf-input" autocomplete="off">
                 <label class="checkbox-label">
@@ -68,8 +63,100 @@
                 </label>
             </div>
 
-            <!-- 确定按钮 -->
+            <!-- 点击“登錄”进入大厅并显示武器百科入口 -->
             <button class="gf-btn" onclick="handleLogin()">登錄</button>
+        </div>
+
+        <!-- 3. 主界面大厅导航（登录后淡入显示） -->
+        <div id="lobby-menu" class="lobby-menu">
+            <button class="lobby-btn" onclick="openWeaponWiki()">⚔️ 精靈武器百科</button>
+        </div>
+
+        <!-- 4. 复刻原版《精灵乐章》武器制作/百科弹窗 -->
+        <div id="weapon-modal" class="weapon-modal">
+            <div class="wiki-window">
+                <!-- 窗口标题栏 -->
+                <div class="wiki-header">
+                    <span class="wiki-title">Crafting success rate...</span>
+                    <button class="wiki-close-btn" onclick="closeWeaponWiki()">X</button>
+                </div>
+
+                <!-- 窗口主体：左右双面板 -->
+                <div class="wiki-body">
+                    <!-- 左侧：武器列表与分类树 -->
+                    <div class="wiki-left-panel">
+                        <div class="wiki-category-header">
+                            <div class="weapon-icon-box">🗡️</div>
+                            <span class="weapon-type-name">Sword</span>
+                            <div class="wiki-checkboxes">
+                                <label><input type="checkbox" checked> Applicable</label>
+                                <label><input type="checkbox"> Inferior</label>
+                            </div>
+                        </div>
+
+                        <!-- 可折叠分类树 -->
+                        <div class="tree-view">
+                            <div class="tree-node" onclick="toggleTree('basic-tree')">
+                                <span class="tree-toggle">+</span> <span>Basic Item</span>
+                            </div>
+                            <div id="basic-tree" class="tree-children" style="display:none;">
+                                <div class="tree-item" onclick="selectWeapon('sword_1')">└ 鐵劍 (Level 1)</div>
+                                <div class="tree-item" onclick="selectWeapon('sword_2')">└ 精鋼大劍 (Level 15)</div>
+                            </div>
+
+                            <div class="tree-node" onclick="toggleTree('advanced-tree')">
+                                <span class="tree-toggle">+</span> <span>Advanced Item</span>
+                            </div>
+                            <div id="advanced-tree" class="tree-children" style="display:none;">
+                                <div class="tree-item" onclick="selectWeapon('sword_3')">└ 騎士長劍 (Level 30)</div>
+                                <div class="tree-item" onclick="selectWeapon('sword_4')">└ 聖光之裁 (Level 45)</div>
+                            </div>
+
+                            <div class="tree-node" onclick="toggleTree('expert-tree')">
+                                <span class="tree-toggle">+</span> <span>Expert Item</span>
+                            </div>
+                            <div id="expert-tree" class="tree-children" style="display:none;">
+                                <div class="tree-item orange-item" onclick="selectWeapon('sword_5')">★ 狂王之怒 (Level 60 橘裝)</div>
+                                <div class="tree-item orange-item" onclick="selectWeapon('sword_6')">★ 瑟斐爾之光 (Level 75 橘裝)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：武器详情与材料消耗 -->
+                    <div class="wiki-right-panel">
+                        <div class="detail-section">
+                            <div class="section-title">Crafted Item</div>
+                            <div id="weapon-detail" class="weapon-detail-box">
+                                <div class="empty-tip">請从左侧选择一件武器查看详细属性</div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <div class="section-title">Required Materials</div>
+                            <div id="materials-list" class="materials-box">
+                                --
+                            </div>
+                        </div>
+
+                        <!-- 消耗金钱与时间 -->
+                        <div class="cost-bar">
+                            <span class="cost-title">Required Cost:</span>
+                            <div class="currency-group">
+                                <span id="gold-cost" class="cost-num">0</span><span class="coin gold"></span>
+                                <span id="silver-cost" class="cost-num">0</span><span class="coin silver"></span>
+                                <span id="copper-cost" class="cost-num">0</span><span class="coin copper"></span>
+                            </div>
+                            <span class="time-title">Time Spent: <span id="time-cost">0s</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 底部操作按钮 -->
+                <div class="wiki-footer">
+                    <button class="gf-dialog-btn" onclick="closeWeaponWiki()">OK</button>
+                    <button class="gf-dialog-btn" onclick="closeWeaponWiki()">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -96,33 +183,28 @@
         let introFinished = false;
 
         bgm.volume = 0.3;
-        clickSfx.volume = 0.6; // 点击音效音量设定为 0.6
+        clickSfx.volume = 0.6;
 
-        // 统一播放点击音效函数（支持连续快速点击重置播放）
         function playClickSound() {
             clickSfx.currentTime = 0;
             clickSfx.play().catch(err => console.log("SFX 播放拦截:", err));
         }
 
-        // 世代主题资源映射
         const themeData = {
             '1': { bg: 'bg.png', music: 'bgm.mp3' },
             '2': { bg: 'bg1.png', music: 'bgm2.mp3' },
             '3': { bg: 'bg2.png', music: 'bgm3.mp3' }
         };
 
-        // 切换世代主题函数
         function changeTheme(ver) {
-            playClickSound(); // 点击切换版本时触发音效
+            playClickSound();
             const currentData = themeData[ver];
             if (!currentData) return;
 
             mainContent.style.backgroundImage = `url('${currentData.bg}')`;
-
             const isPlaying = !bgm.paused;
             bgmSource.src = currentData.music;
             bgm.load();
-            
             if (isPlaying || introFinished) {
                 bgm.play().catch(err => console.log("BGM 播放拦截:", err));
             }
@@ -130,7 +212,7 @@
 
         function toggleSettings(event) {
             event.stopPropagation();
-            playClickSound(); // 点击设置按钮触发音效
+            playClickSound();
             settingsPanel.style.display = (settingsPanel.style.display === 'flex') ? 'none' : 'flex';
         }
 
@@ -139,11 +221,11 @@
         });
 
         document.addEventListener('click', (event) => {
-            // 给所有按键、多选框、下拉框绑定点击音效
             if (event.target.tagName === 'BUTTON' || 
                 event.target.tagName === 'INPUT' || 
                 event.target.tagName === 'SELECT' || 
-                event.target.classList.contains('checkbox-label')) {
+                event.target.classList.contains('checkbox-label') ||
+                event.target.classList.contains('tree-item')) {
                 playClickSound();
             }
 
@@ -162,13 +244,10 @@
             if (introFinished) return;
             introFinished = true;
             playClickSound();
-
             introScreen.style.opacity = '0';
-            
             if (bgm.paused) {
-                bgm.play().catch(err => console.log("自動播放被攔截: ", err));
+                bgm.play().catch(err => console.log("自動播放被欄截: ", err));
             }
-
             setTimeout(() => {
                 introScreen.style.display = 'none';
                 mainContent.style.opacity = '1';
@@ -177,9 +256,78 @@
 
         video.addEventListener('ended', finishIntro);
 
+        // --- 登錄与武器百科切换逻辑 ---
         function handleLogin() {
             playClickSound();
-            alert("歡迎回到瑟斐爾大陸！");
+            // 淡出登录框与顶部Logo，显示主导航菜单
+            document.getElementById('login-ui-container').style.display = 'none';
+            document.getElementById('top-logo').style.transform = 'scale(0.85)';
+            document.getElementById('lobby-menu').style.display = 'flex';
+        }
+
+        function openWeaponWiki() {
+            playClickSound();
+            document.getElementById('weapon-modal').style.display = 'flex';
+        }
+
+        function closeWeaponWiki() {
+            playClickSound();
+            document.getElementById('weapon-modal').style.display = 'none';
+        }
+
+        // 分类树展开/折叠
+        function toggleTree(id) {
+            playClickSound();
+            const tree = document.getElementById(id);
+            const toggleBtn = tree.previousElementSibling.querySelector('.tree-toggle');
+            if (tree.style.display === 'none') {
+                tree.style.display = 'block';
+                toggleBtn.textContent = '-';
+            } else {
+                tree.style.display = 'none';
+                toggleBtn.textContent = '+';
+            }
+        }
+
+        // 武器数据库与动态渲染
+        const weaponDB = {
+            'sword_1': {
+                name: '鐵劍 (Iron Sword)',
+                level: 1,
+                atk: '+45 物理攻擊',
+                desc: '初學者常用的大众鐵劍，轻巧易上手。',
+                mats: ['鐵礦石 x 5', '木材 x 2'],
+                gold: 0, silver: 1, copper: 50, time: '5s'
+            },
+            'sword_5': {
+                name: '狂王之怒 (Mad King\'s Rage)',
+                level: 60,
+                atk: '+1420 物理攻擊',
+                effect: '★ 攻擊時有 15% 機率提高力量 120 點，持續 10 秒。',
+                desc: '傳說中被狂王附魔的切鐵神兵，散發着凛冽的气息。',
+                mats: ['瑟斐爾的精華 x 10', '古老神木 x 15', '狂暴之核心 x 2'],
+                gold: 25, silver: 40, copper: 0, time: '2m 30s'
+            }
+        };
+
+        function selectWeapon(key) {
+            playClickSound();
+            const item = weaponDB[key];
+            if (!item) return;
+
+            document.getElementById('weapon-detail').innerHTML = `
+                <div style="color: #ffe699; font-weight: bold; font-size: 16px;">${item.name}</div>
+                <div style="color: #8ce68c; margin-top: 4px;">需求等級：Lv.${item.level}</div>
+                <div style="color: #ff9999; margin-top: 4px;">${item.atk}</div>
+                ${item.effect ? `<div style="color: #ffcc00; margin-top: 4px;">${item.effect}</div>` : ''}
+                <div style="color: #ccc; font-size: 12px; margin-top: 8px; font-style: italic;">${item.desc}</div>
+            `;
+
+            document.getElementById('materials-list').innerHTML = item.mats.map(m => `<div>• ${m}</div>`).join('');
+            document.getElementById('gold-cost').textContent = item.gold;
+            document.getElementById('silver-cost').textContent = item.silver;
+            document.getElementById('copper-cost').textContent = item.copper;
+            document.getElementById('time-cost').textContent = item.time;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
