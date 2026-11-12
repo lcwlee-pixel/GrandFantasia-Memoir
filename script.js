@@ -199,7 +199,8 @@ const weaponDB = {
             { name: '秘銀果實的殼', amount: '0/2' }
         ],
         gold: 0, silver: 6, copper: 75, time: '10秒',
-        img: 'weapon/邪殺劍.png'
+        img: 'weapon/邪殺劍.png',
+        thumb: 'weapon/source/邪殺劍.png' // 👈 新增縮圖路徑
     },
 
     'sword_eye': {
@@ -225,7 +226,8 @@ const weaponDB = {
             { name: '秘銀果實的殼', amount: '0/2' }
         ],
         gold: 0, silver: 8, copper: 50, time: '10秒',
-        img: 'weapon/巨劍·信念之眼.png'
+        img: 'weapon/巨劍·信念之眼.png',
+        thumb: 'weapon/source/巨劍·信念之眼.png' // 👈 新增縮圖路徑
     },
 
     'sword_dawn': {
@@ -252,7 +254,8 @@ const weaponDB = {
             { name: '秘銀果實的殼', amount: '0/2' }
         ],
         gold: 0, silver: 6, copper: 75, time: '10秒',
-        img: 'weapon/晨曦之劍.png'
+        img: 'weapon/晨曦之劍.png',
+        thumb: 'weapon/source/晨曦之劍.png' // 👈 新增縮圖路徑
     }
 };
 
@@ -268,9 +271,13 @@ function selectWeapon(key) {
         const statsHtml = item.stats.map(s => `<div style="color: #ffffff;">${s.label} ${s.val}</div>`).join('');
         const blueHtml = item.blueEffects.map(b => `<div style="color: #00ffff;">${b}</div>`).join('');
         const greenHtml = item.greenEffects.map(g => `<div style="color: #80ff00;">${g}</div>`).join('');
+const thumbHtml = item.thumb 
+            ? `<div class="gf-item-thumb-box"><img src="${item.thumb}" alt="${item.name}"></div>` 
+            : '';
 
         statsBox.innerHTML = `
             <div class="gf-tooltip-content">
+                ${thumbHtml}
                 <div style="color: ${item.nameColor}; font-weight: bold; font-size: 13px;">${item.name}</div>
                 <div style="color: #ffffff;">裝備綁定</div>
                 <div style="color: #ffffff;">${item.type}</div>
@@ -330,3 +337,165 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+// ==========================================
+// 14 大武器分類目錄結構（圖示路徑已指向 weapon/ 資料夾）
+// ==========================================
+const categoryDB = {
+    'sword': {
+        title: '劍類製造',
+        icon: 'weapon/sword.png',
+        groups: [
+            {
+                id: 'onehand-sword',
+                name: '單手劍',
+                items: [
+                    { key: 'sword_evil', name: '邪殺劍', color: '#ff8000' },
+                    { key: 'sword_dawn', name: '晨曦之劍', color: '#ff8000' }
+                ]
+            },
+            {
+                id: 'twohand-sword',
+                name: '雙手劍',
+                items: [
+                    { key: 'sword_eye', name: '巨劍·信念之眼', color: '#ff8000' }
+                ]
+            }
+        ]
+    },
+    'mac': {
+        title: '巨劍製造',
+        icon: 'weapon/mac.png',
+        groups: [
+            { id: 'heavy-sword', name: '雙手巨劍', items: [] }
+        ]
+    },
+    'axe': {
+        title: '斧類製造',
+        icon: 'weapon/axe.png',
+        groups: [
+            { id: 'onehand-axe', name: '單手斧', items: [] },
+            { id: 'twohand-axe', name: '雙手斧', items: [] }
+        ]
+    },
+    'hammer': {
+        title: '槌類製造',
+        icon: 'weapon/hammer.png',
+        groups: [
+            { id: 'onehand-hammer', name: '單手槌', items: [] },
+            { id: 'twohand-hammer', name: '雙手槌', items: [] }
+        ]
+    },
+    'bow': {
+        title: '弓箭製造',
+        icon: 'weapon/bow.png',
+        groups: [
+            { id: 'longbow', name: '長弓 / 戰弓', items: [] }
+        ]
+    },
+    'firearm': {
+        title: '火槍製造',
+        icon: 'weapon/firearm.png',
+        groups: [
+            { id: 'gun', name: '火槍 / 狙擊槍', items: [] }
+        ]
+    },
+    'staff': {
+        title: '法杖製造',
+        icon: 'weapon/staff.png',
+        groups: [
+            { id: 'onehand-staff', name: '單手法杖', items: [] },
+            { id: 'twohand-staff', name: '雙手法杖', items: [] }
+        ]
+    },
+    'sheild': {
+        title: '盾牌製造',
+        icon: 'weapon/sheild.png',
+        groups: [
+            { id: 'shield-list', name: '守護盾牌', items: [] }
+        ]
+    },
+    'scythe': {
+        title: '鐮刀製造',
+        icon: 'weapon/scythe.png',
+        groups: [
+            { id: 'scythe-list', name: '死神鐮刀', items: [] }
+        ]
+    },
+    'katana': {
+        title: '太刀製造',
+        icon: 'weapon/katana.png',
+        groups: [
+            { id: 'katana-list', name: '太刀 / 武士刀', items: [] }
+        ]
+    },
+    'handblade': {
+        title: '拳刃製造',
+        icon: 'weapon/handblade.png',
+        groups: [
+            { id: 'handblade-list', name: '拳刃 / 指虎', items: [] }
+        ]
+    },
+    'ninja': {
+        title: '忍具製造',
+        icon: 'weapon/ninja.png',
+        groups: [
+            { id: 'ninja-list', name: '手裡劍 / 忍具', items: [] }
+        ]
+    },
+    'maccanon': {
+        title: '魔導砲製造',
+        icon: 'weapon/maccanon.png',
+        groups: [
+            { id: 'cannon-list', name: '重型魔導砲', items: [] }
+        ]
+    },
+    'key': {
+        title: '魔鑰製造',
+        icon: 'weapon/key.png',
+        groups: [
+            { id: 'key-list', name: '星靈魔鑰', items: [] }
+        ]
+    }
+};
+
+// 切換武器分類按鈕
+function switchCategory(catKey, btnElement) {
+    playClickSound();
+    const catData = categoryDB[catKey];
+    if (!catData) return;
+
+    if (btnElement) {
+        document.querySelectorAll('.cat-tab-btn').forEach(btn => btn.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+
+    const iconEl = document.getElementById('current-cat-icon');
+    const titleEl = document.getElementById('current-cat-title');
+    if (iconEl) iconEl.src = catData.icon;
+    if (titleEl) titleEl.textContent = catData.title;
+
+    const container = document.getElementById('weapon-tree-container');
+    if (!container) return;
+
+    container.innerHTML = catData.groups.map((group, index) => {
+        const itemsHtml = group.items.length > 0
+            ? group.items.map(item => `
+                <div class="tree-item" onclick="selectWeapon('${item.key}')" style="color: ${item.color}; font-weight: bold;">
+                    └ ${item.name}
+                </div>
+            `).join('')
+            : `<div style="color: #9e917e; font-size: 12px; padding: 3px 0;">└ (尚未收錄武器資料)</div>`;
+
+        return `
+            <div class="tree-node" onclick="toggleTree('${group.id}')" style="${index > 0 ? 'margin-top: 6px;' : ''}">
+                <span class="tree-icon">-</span> ${group.name}
+            </div>
+            <div id="${group.id}" class="tree-sub">
+                ${itemsHtml}
+            </div>
+        `;
+    }).join('');
+}
+
+// 頁面載入完成後預設顯示劍類清單
+switchCategory('sword', null);

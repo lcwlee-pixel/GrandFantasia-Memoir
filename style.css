@@ -369,51 +369,152 @@ button, input, select, label, a {
 .back-home-btn { padding: 6px 16px; background: #3a2e22; color: #e6c885; border: 1px solid #b89b5e; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: bold; }
 .page-title { color: #ffe699; font-size: 20px; font-weight: bold; }
 
+/* 1. 外層大窗口：底層為象牙米白底色 */
+/* 1. 外層大窗口：透明容器 */
 .gf-craft-window {
-    width: 1200px; max-width: 95vw; height: calc(100vh - 120px); max-height: 850px; min-height: 580px;
-    background: #807668; border: 3px double #ded1b8; border-radius: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    display: flex; flex-direction: column; padding: 4px; color: #000; box-sizing: border-box;
+    position: relative;
+    width: 1200px; max-width: 95vw; height: calc(100vh - 110px); max-height: 850px; min-height: 580px;
+    background: transparent; /* 本體改透明，底色交給下面的 ::before 控制 */
+    padding: 16px; 
+    display: flex; flex-direction: column; color: #2b1d0e; box-sizing: border-box;
 }
-.gf-craft-header { height: 28px; background: #6e6456; display: flex; justify-content: space-between; align-items: center; padding: 0 8px; border-bottom: 1px solid #524a3e; flex-shrink: 0; }
-.gf-title-text { color: #ffff99; font-weight: bold; font-size: 13px; }
-.gf-close-x { background: #8c3a3a; color: #fff; border: 1px solid #ff9999; width: 18px; height: 18px; cursor: pointer; font-size: 11px; line-height: 16px; }
 
-.gf-craft-body { display: flex; flex: 1; gap: 6px; padding: 6px 0; min-height: 0; }
-.craft-panel { background: #73695b; border: 2px inset #ded1b8; padding: 8px; display: flex; flex-direction: column; height: 100%; box-sizing: border-box; min-height: 0; }
+/* 1-A. 底色圖層：調這四個數字就能直接控制「底色」的大小！ */
+.gf-craft-window::before {
+    content: "";
+    position: absolute;
+    /* 👇【調底色大小看這裡】數字越大，底色就往內縮得越多（不會外溢） */
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    
+    background: linear-gradient(180deg, #f5ecd8 0%, #ebd9ba 85%, #d6c19c 100%);
+    border-radius: 12px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.9);
+    z-index: 0; /* 墊在最底層 */
+}
+
+/* 確保標題欄和三大面板浮在底色之上 */
+.gf-craft-header, .gf-craft-body, .gf-craft-footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* 1-B. 珍珠外框圖層：蓋在最上層 */
+.gf-craft-window::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-style: solid;
+    border-width: 24px;
+    border-image-source: url('window-frame.png');
+    border-image-slice: 65;
+    border-image-repeat: stretch;
+    pointer-events: none;
+    z-index: 20; /* 蓋在底色最上面 */
+}.gf-craft-header { 
+    height: 28px; 
+    background: linear-gradient(90deg, rgba(65,57,47,0.9) 0%, rgba(95,85,72,0.9) 50%, rgba(65,57,47,0.9) 100%);
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 0 10px; 
+    border-bottom: 1px solid #4a4136;
+    margin-bottom: 4px;
+    flex-shrink: 0; 
+}
+.gf-title-text { color: #ffff99; font-weight: bold; font-size: 13px; text-shadow: 1px 1px 2px #000; }
+.gf-close-x { 
+    background: url('btn.png') no-repeat center center/100% 100%; 
+    color: #5c1a1a; border: none; width: 22px; height: 22px; 
+    cursor: pointer; font-size: 12px; line-height: 22px; font-weight: bold; 
+}
+.gf-close-x:hover { filter: brightness(1.1); }
+.gf-close-x:active { transform: translateY(1px); }
+
+.gf-craft-body { 
+    display: flex; 
+    flex: 1; 
+    gap: 8px; 
+    padding: 4px 0; 
+    min-height: 0; 
+}
+
+/* 2. 三大板塊面板框：套用 inner-panel.png 象牙金鑲邊面板 */
+.craft-panel { 
+    border-style: solid;
+    border-width: 10px;
+    border-image-source: url('inner-panel.png');
+    border-image-slice: 16 fill; 
+    border-image-repeat: stretch;
+    padding: 6px; 
+    display: flex; 
+    flex-direction: column; 
+    height: 100%; 
+    box-sizing: border-box; 
+    min-height: 0; 
+}
 .left-panel { width: 28%; }
 .middle-panel { width: 40%; }
 .right-panel { width: 32%; }
 
-.panel-header-item { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #5a5144; padding-bottom: 6px; flex-shrink: 0; }
-.icon-box { width: 32px; height: 32px; background: #3a2e22; border: 1px solid #b89b5e; display: flex; align-items: center; justify-content: center; }
-.type-title { color: #fff; font-weight: bold; }
+.panel-header-item { display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #4d453a; padding-bottom: 6px; flex-shrink: 0; }
+.icon-box { width: 32px; height: 32px; background: #3a2e22; border: 1px solid #b89b5e; box-shadow: inset 0 0 4px #000; display: flex; align-items: center; justify-content: center; border-radius: 2px; }
+.type-title { color: #fff; font-weight: bold; text-shadow: 1px 1px 2px #000; }
 .chk-group { margin-left: auto; font-size: 11px; color: #fff; }
 
-.tree-container { flex: 1; background: #544c41; border: 1px inset #3a2e22; margin-top: 6px; padding: 6px; overflow-y: auto; }
-.tree-node { color: #ffe699; font-weight: bold; cursor: pointer; padding: 3px 0; }
+/* 3. 深色內凹槽（列表、屬性區、材料區） */
+.tree-container { 
+    flex: 1; background: rgba(58, 51, 43, 0.85); 
+    border: 1px solid #362f27;
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+    margin-top: 6px; padding: 6px; overflow-y: auto; 
+}
+.tree-node { color: #ffe699; font-weight: bold; cursor: pointer; padding: 3px 0; text-shadow: 1px 1px 1px #000; }
 .tree-sub { padding-left: 14px; }
-.tree-item { color: #ddd; cursor: pointer; padding: 3px 0; font-size: 13px; }
+.tree-item { color: #ddd; cursor: pointer; padding: 4px 4px; font-size: 13px; border-radius: 2px; transition: background 0.15s; }
+.tree-item:hover { background: rgba(255, 230, 153, 0.15); }
 
-.middle-panel .info-section:first-child { background: #544c41; border: 1px inset #3a2e22; padding: 8px; margin-bottom: 6px; flex: 1; overflow-y: auto; min-height: 0; }
-.middle-panel .info-section:nth-child(2) { background: #544c41; border: 1px inset #3a2e22; padding: 8px; margin-bottom: 6px; height: 130px; flex-shrink: 0; overflow-y: auto; }
+.middle-panel .info-section:first-child { 
+    background: rgba(58, 51, 43, 0.85); 
+    border: 1px solid #362f27;
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+    padding: 8px; margin-bottom: 6px; flex: 1; overflow-y: auto; min-height: 0; 
+}
+.middle-panel .info-section:nth-child(2) { 
+    background: rgba(58, 51, 43, 0.85); 
+    border: 1px solid #362f27;
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.75);
+    border-radius: 2px;
+    padding: 8px; margin-bottom: 6px; height: 130px; flex-shrink: 0; overflow-y: auto; 
+}
 
-.yellow-label { color: #ffff00; font-weight: bold; font-size: 13px; margin-bottom: 6px; }
+.yellow-label { color: #ffff00; font-weight: bold; font-size: 13px; margin-bottom: 6px; text-shadow: 1px 1px 2px #000; }
 .yellow-label.inline { display: inline-block; margin-bottom: 0; }
 .stats-box, .mats-box { color: #fff; font-size: 12px; }
 .tip { color: #aaa; }
 
-.bottom-cost-area { background: #423b32; border: 1px inset #2e2822; padding: 6px; font-size: 12px; color: #fff; flex-shrink: 0; }
+.bottom-cost-area { 
+    background: rgba(45, 39, 32, 0.9); 
+    border: 1px solid #26211b;
+    box-shadow: inset 1px 1px 4px rgba(0,0,0,0.8);
+    border-radius: 2px;
+    padding: 6px 8px; font-size: 12px; color: #fff; flex-shrink: 0; 
+}
 .coins { display: inline-flex; align-items: center; gap: 4px; margin: 0 4px; }
-.coin-icon { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.coin-icon { width: 11px; height: 11px; border-radius: 50%; display: inline-block; box-shadow: 0 1px 2px #000; }
 .coin-icon.gold { background: #ffd700; }
 .coin-icon.silver { background: #c0c0c0; }
 .coin-icon.copper { background: #b87333; }
 
-/* --- 右欄：武器圖鑑展示區 --- */
+/* 4. 右欄：武器圖鑑展示區 */
 .image-display-frame { 
     flex: 1; 
-    background: url('weapon/wpbg.jpg') no-repeat center center/contain;
-    border: 2px inset #2a241d; 
+    background: #2b251e url('weapon/wpbg.jpg') no-repeat center center/contain;
+    border: 2px solid #4a4033;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.95);
+    border-radius: 3px;
     margin-top: 6px; 
     display: flex; 
     justify-content: center; 
@@ -424,33 +525,134 @@ button, input, select, label, a {
     padding: 15px; 
 }
 
+.placeholder-text { display: flex; flex-direction: column; align-items: center; gap: 10px; color: #8c8070; font-size: 15px; }
+.placeholder-text span:first-child { font-size: 40px; }
+
 #weapon-preview-img { 
     max-width: 80%; 
     max-height: 85%; 
     object-fit: contain; 
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.85));
 }
 
+/* 5. 底部控制區：施法讀條 + 真實遊戲按鈕貼圖 (btn.png) */
 .gf-craft-footer { 
     display: flex; 
-    justify-content: flex-end; 
-    gap: 8px; 
+    justify-content: space-between; 
+    align-items: center;
     padding-top: 4px; 
     flex-shrink: 0;
-}
-.gf-win-btn { 
-    padding: 4px 18px; 
-    background: linear-gradient(to bottom, #d4c29d, #7c6d53); 
-    border: 1px solid #fff; 
-    color: #000; 
-    font-weight: bold; 
-    cursor: pointer; 
-    font-size: 12px; 
+    min-height: 36px;
 }
 
+.footer-btns {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+}
+
+.gf-win-btn { 
+    width: 96px;
+    height: 30px;
+    background: url('btn.png') no-repeat center center/100% 100%; 
+    border: none; 
+    color: #2b1d0e; 
+    font-weight: bold; 
+    cursor: pointer; 
+    font-size: 13px; 
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+    transition: filter 0.15s, transform 0.1s;
+}
+.gf-win-btn:hover {
+    filter: brightness(1.12);
+}
+.gf-win-btn:active {
+    filter: brightness(0.92);
+    transform: translateY(1px);
+}
+.gf-win-btn:disabled {
+    filter: grayscale(0.8) brightness(0.7);
+    cursor: not-allowed !important;
+}
+/* 14 大武器分類按鈕列（7x2 整齊網格排列） */
+.weapon-category-tabs {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    background: rgba(45, 39, 32, 0.85);
+    border: 1px solid #362f27;
+    box-shadow: inset 1px 1px 4px rgba(0, 0, 0, 0.8);
+    padding: 5px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+}
+
+.cat-tab-btn {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    padding: 1px;
+    background: #2b2319;
+    border: 1px solid #756349;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    filter: brightness(0.75);
+}
+
+.cat-tab-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 2px;
+}
+
+.cat-tab-btn:hover {
+    filter: brightness(1.05);
+    border-color: #e6c885;
+}
+
+.cat-tab-btn.active {
+    filter: brightness(1.15);
+    border: 2px solid #ffcc00;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.85);
+    transform: translateY(-1px);
+}
+
+/* 武器屬性提示框深色底框 */
+/* 武器屬性提示框深色底框 */
 .gf-tooltip-content {
-    background: rgba(30, 24, 18, 0.95);
-    border: 1px solid #665544;
-    padding: 10px; font-size: 12px; line-height: 1.5;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+    position: relative; /* 作為右上角縮圖的定位基準 */
+    background: rgba(24, 19, 14, 0.96);
+    border: 1px solid #75634d;
+    border-radius: 2px;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
+}
+
+/* 👇 新增：右上角武器縮圖方框（還原截圖質感） */
+.gf-item-thumb-box {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 58px;
+    height: 58px;
+    background: #14181f; /* 深色底座襯底 */
+    border: 1px solid #75634d;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.85), inset 0 0 4px rgba(0, 0, 0, 0.8);
+    padding: 3px;
+    border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gf-item-thumb-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }

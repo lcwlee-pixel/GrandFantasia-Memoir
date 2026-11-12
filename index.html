@@ -117,37 +117,72 @@
                 </div>
 
                 <div class="gf-craft-body">
-                    <!-- 1. 左栏：分类树 (包含单手剑与双手剑分类) -->
+<!-- 1. 左欄：14大武器分類圖示按鈕列 + 分類樹 -->
                     <div class="craft-panel left-panel">
+                        <!-- 14大武器分類圖示按鈕列（兩排各7個） -->
+                        <div class="weapon-category-tabs">
+                            <button class="cat-tab-btn active" onclick="switchCategory('sword', this)" title="劍類製造">
+                                <img src="weapon/sword.png" alt="劍類">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('mac', this)" title="巨劍製造">
+                                <img src="weapon/mac.png" alt="巨劍">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('axe', this)" title="斧類製造">
+                                <img src="weapon/axe.png" alt="斧類">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('hammer', this)" title="槌類製造">
+                                <img src="weapon/hammer.png" alt="槌類">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('bow', this)" title="弓箭製造">
+                                <img src="weapon/bow.png" alt="弓箭">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('firearm', this)" title="火槍製造">
+                                <img src="weapon/firearm.png" alt="火槍">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('staff', this)" title="法杖製造">
+                                <img src="weapon/staff.png" alt="法杖">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('sheild', this)" title="盾牌製造">
+                                <img src="weapon/sheild.png" alt="盾牌">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('scythe', this)" title="鐮刀製造">
+                                <img src="weapon/scythe.png" alt="鐮刀">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('katana', this)" title="太刀製造">
+                                <img src="weapon/katana.png" alt="太刀">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('handblade', this)" title="拳刃製造">
+                                <img src="weapon/handblade.png" alt="拳刃">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('ninja', this)" title="忍具製造">
+                                <img src="weapon/ninja.png" alt="忍具">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('maccanon', this)" title="魔導砲製造">
+                                <img src="weapon/maccanon.png" alt="魔導砲">
+                            </button>
+                            <button class="cat-tab-btn" onclick="switchCategory('key', this)" title="魔鑰製造">
+                                <img src="weapon/key.png" alt="魔鑰">
+                            </button>
+                        </div>
+
+                        <!-- 當前選中的分類標題列 -->
                         <div class="panel-header-item">
-                            <div class="icon-box">🗡️</div>
-                            <span class="type-title">劍類製造</span>
+                            <div class="icon-box">
+                                <img id="current-cat-icon" src="weapon/sword.png" alt="分類圖示" style="width: 100%; height: 100%; object-fit: cover;">
+                            </div>
+                            <span id="current-cat-title" class="type-title">劍類製造</span>
                             <div class="chk-group">
                                 <label><input type="checkbox" checked> 顯示可執行</label>
                                 <label><input type="checkbox"> 過濾灰色項目</label>
                             </div>
                         </div>
 
-                        <div class="tree-container">
-                            <!-- 单手剑分类 -->
-                            <div class="tree-node" onclick="toggleTree('onehand-tree')">
-                                <span class="tree-icon">-</span> 單手劍
-                            </div>
-                            <div id="onehand-tree" class="tree-sub">
-                                <div class="tree-item" onclick="selectWeapon('sword_evil')" style="color: #ff8000; font-weight: bold;">└ 邪殺劍</div>
-                                <div class="tree-item" onclick="selectWeapon('sword_dawn')" style="color: #ff8000; font-weight: bold;">└ 晨曦之劍</div>
-                            </div>
-
-                            <!-- 双手剑分类 -->
-                            <div class="tree-node" onclick="toggleTree('twohand-tree')" style="margin-top: 6px;">
-                                <span class="tree-icon">-</span> 雙手劍
-                            </div>
-                            <div id="twohand-tree" class="tree-sub">
-                                <div class="tree-item" onclick="selectWeapon('sword_eye')" style="color: #ff8000; font-weight: bold;">└ 巨劍·信念之眼</div>
-                            </div>
+                        <!-- 動態切換的武器樹狀清單 -->
+                        <div id="weapon-tree-container" class="tree-container">
+                            <!-- 切換分類時由 JS 自動渲染 -->
                         </div>
                     </div>
-
+                    
                     <!-- 2. 中栏：属性与制作配方 -->
                     <div class="craft-panel middle-panel">
                         <div class="info-section">
